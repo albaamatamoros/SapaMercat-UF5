@@ -2,15 +2,14 @@ import java.util.Date;
 
 public class Alimentacio extends Producte{
 
-    Date dataCaducitat;
+    String dataCaducitat;
 
-    public Alimentacio(float preu, String nom, int codiDeBarres, Date dataCaducitat) {
+    public Alimentacio(float preu, String nom, String codiDeBarres, String dataCaducitat) {
         super(preu, nom, codiDeBarres);
         this.dataCaducitat = dataCaducitat;
     }
 
-    public Date getPreu() {
-        //
+    public String getPreu() {
         return dataCaducitat;
     }
 
