@@ -5,4 +5,8 @@ public class Electronica extends Producte{
         super(preu, nom, codiDeBarres);
         this.diesDeGarantia = diesDeGarantia;
     }
+
+    public double getPreu() {
+        return preu + preu * ((double) diesDeGarantia / 365) * 0.1;
+    }
 }
