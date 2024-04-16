@@ -12,9 +12,8 @@ public class SapaMercat {
             System.out.println("------------");
             System.out.println("1) Introduir producte");
             System.out.println("2) Passar per caixa");
-            System.out.println("");
-            System.out.println("");
-            System.out.print("");
+            System.out.println("3) Mostrar carret de compra");
+            System.out.println("0) Acabar");
             opcio = scan.nextLine();
             switch (opcio) {
                 case "1":
@@ -23,18 +22,13 @@ public class SapaMercat {
                     break;
                 case "3":
                     break;
-                case "4":
-                    break;
-                case "5":
-                    break;
                 case "0":
                     break;
                 default:
-                    System.out.println("------------------------------------------------------------");
-                    System.out.println("ATENCIÓ!!! Ha de ser un valor entre 0 i 12");
-                    System.out.println("------------------------------------------------------------");
+                    System.out.println("-------------------------------");
+                    System.out.println("ATENCIÓ! Ha de ser entre 0 i 3");
+                    System.out.println("-------------------------------");
             }
         } while (!(opcio.equals("0")));
-    }
     }
 }
