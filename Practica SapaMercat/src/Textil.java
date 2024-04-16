@@ -5,4 +5,14 @@ public class Textil extends Producte{
         super(preu, nom, codiDeBarres);
         this.composicioTextil = composicioTextil;
     }
+
+    @Override
+    public String toString() {
+        return "Textil{" +
+                "composicioTextil='" + composicioTextil + '\'' +
+                ", preu=" + preu +
+                ", nom='" + nom + '\'' +
+                ", codiDeBarres=" + codiDeBarres +
+                '}';
+    }
 }

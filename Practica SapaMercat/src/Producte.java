@@ -10,4 +10,13 @@ public class Producte {
         this.nom = nom;
         this.codiDeBarres = codiDeBarres;
     }
+
+    @Override
+    public String toString() {
+        return "Producte{" +
+                "preu=" + preu +
+                ", nom='" + nom + '\'' +
+                ", codiDeBarres=" + codiDeBarres +
+                '}';
+    }
 }

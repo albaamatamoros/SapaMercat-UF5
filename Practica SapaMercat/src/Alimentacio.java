@@ -13,4 +13,14 @@ public class Alimentacio extends Producte{
         //
         return dataCaducitat;
     }
+
+    @Override
+    public String toString() {
+        return "Alimentacio{" +
+                "dataCaducitat=" + dataCaducitat +
+                ", preu=" + getPreu() +
+                ", nom='" + nom + '\'' +
+                ", codiDeBarres=" + codiDeBarres +
+                '}';
+    }
 }
