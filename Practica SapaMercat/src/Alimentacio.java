@@ -10,6 +10,7 @@ public class Alimentacio extends Producte{
     }
 
     public Date getPreu() {
+        //
         return dataCaducitat;
     }
 }

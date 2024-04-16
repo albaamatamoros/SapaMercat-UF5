@@ -7,6 +7,7 @@ public class Electronica extends Producte{
     }
 
     public double getPreu() {
+        //
         return preu + preu * ((double) diesDeGarantia / 365) * 0.1;
     }
 }
