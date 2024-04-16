@@ -1,4 +1,5 @@
-public class Producte {
+public class Producte{
+    //es abstracta
     float preu;
     String nom;
     String codiDeBarres;

@@ -84,16 +84,22 @@ public class SapaMercat {
         String codiBarres;
 
         System.out.println("Afegir aliment");
+
         System.out.print("Nom producte: \t");
         nom = scan.nextLine();
+
         System.out.print("preu: \t");
         preu = scan.nextFloat();
         scan.nextLine();
+
         System.out.print("Codi de barres: \t");
         codiBarres = scan.nextLine();
+
         System.out.print("Data de caducitat: \t");
         dataCaducitat = scan.nextLine();
+
         Alimentacio a1 = new Alimentacio(preu, nom, codiBarres, dataCaducitat);
+
         productes.add(a1);
     }
 
