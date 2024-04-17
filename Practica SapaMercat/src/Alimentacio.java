@@ -10,6 +10,8 @@ public class Alimentacio extends Producte{
     }
 
     public String getPreu() {
+        Date caducitat = new Date(dataCaducitat);
+        Date dataActual = new Date();
         return dataCaducitat;
     }
 

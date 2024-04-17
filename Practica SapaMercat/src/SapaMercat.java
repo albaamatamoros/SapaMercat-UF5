@@ -7,11 +7,6 @@ public class SapaMercat {
     static String opcio;
     static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) {
-
-        //Mostrar Array
-        for (int i = 0; i < productes.size(); i++) {
-            System.out.println(productes.get(i));
-        }
         //Mostrem el menú d'inici
         menuInici();
     }
@@ -35,8 +30,10 @@ public class SapaMercat {
                     introduirProducte();
                     break;
                 case "2":
+                    passarPerCaixa();
                     break;
                 case "3":
+                    mostrarCarretCompra();
                     break;
                 case "0":
                     break;
@@ -87,6 +84,7 @@ public class SapaMercat {
         String dataCaducitat;
         String codiBarres;
         try {
+            //
             System.out.println("Afegir aliment");
 
             System.out.print("Nom producte: \t");
@@ -158,8 +156,20 @@ public class SapaMercat {
             codiBarres = scan.nextLine();
 
             productes.add(new Electronica(preu, nom, codiBarres, garantia));
+            //Mostrar Array
+            for (int i = 0; i < productes.size(); i++) {
+                System.out.println(productes.get(i));
+            }
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void  passarPerCaixa(){
+
+    }
+
+    public static void  mostrarCarretCompra (){
+
     }
 }
