@@ -7,11 +7,13 @@ public class SapaMercat {
     static String opcio;
     static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) {
-        //Mostrem el menú d'inici
-        menuInici();
+
+        //Mostrar Array
         for (int i = 0; i < productes.size(); i++) {
             System.out.println(productes.get(i));
         }
+        //Mostrem el menú d'inici
+        menuInici();
     }
 
     //MENÚS:
@@ -63,8 +65,10 @@ public class SapaMercat {
                     afegirProducteAlimentacio();
                     break;
                 case "2":
+                    afegirProducteTextil();
                     break;
                 case "3":
+                    afegirProducteElectronica();
                     break;
                 case "0":
                     menuInici();
@@ -82,32 +86,80 @@ public class SapaMercat {
         float preu;
         String dataCaducitat;
         String codiBarres;
+        try {
+            System.out.println("Afegir aliment");
 
-        System.out.println("Afegir aliment");
+            System.out.print("Nom producte: \t");
+            nom = scan.nextLine();
 
-        System.out.print("Nom producte: \t");
-        nom = scan.nextLine();
+            System.out.print("preu: \t");
+            preu = scan.nextFloat();
+            scan.nextLine();
 
-        System.out.print("preu: \t");
-        preu = scan.nextFloat();
-        scan.nextLine();
+            System.out.print("Codi de barres: ");
+            codiBarres = scan.nextLine();
 
-        System.out.print("Codi de barres: \t");
-        codiBarres = scan.nextLine();
+            System.out.print("Data de caducitat: ");
+            dataCaducitat = scan.nextLine();
 
-        System.out.print("Data de caducitat: \t");
-        dataCaducitat = scan.nextLine();
-
-        Alimentacio a1 = new Alimentacio(preu, nom, codiBarres, dataCaducitat);
-
-        productes.add(a1);
+            productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void afegirProducteTextil(){
-        System.out.println("Afegir tèxtil");
+        String nom;
+        float preu;
+        String composicio;
+        String codiBarres;
+        try {
+            System.out.println("Afegir tèxtil");
+
+            System.out.print("Nom producte: \t");
+            nom = scan.nextLine();
+
+            System.out.print("preu: \t");
+            preu = scan.nextFloat();
+            scan.nextLine();
+
+            System.out.print("Composició: ");
+            composicio = scan.nextLine();
+
+            System.out.print("Codi de barres: ");
+            codiBarres = scan.nextLine();
+
+            productes.add(new Textil(preu, nom, codiBarres, composicio));
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void afegirProducteElectronica(){
-        System.out.println("Afegir electrònica");
+        String nom;
+        float preu;
+        int garantia;
+        String codiBarres;
+        try {
+            System.out.println("Afegir electrònica");
+
+            System.out.print("Nom producte: \t");
+            nom = scan.nextLine();
+
+            System.out.print("preu: \t");
+            preu = scan.nextFloat();
+            scan.nextLine();
+
+            System.out.print("Garantia (dies): ");
+            garantia = scan.nextInt();
+            scan.nextLine();
+
+            System.out.print("Codi de barres: ");
+            codiBarres = scan.nextLine();
+
+            productes.add(new Electronica(preu, nom, codiBarres, garantia));
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }
