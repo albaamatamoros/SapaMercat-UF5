@@ -6,9 +6,11 @@ public class Electronica extends Producte{
         this.diesDeGarantia = diesDeGarantia;
     }
 
-    public float getPreu() {
+    public float setPreu() {
         return (float) (preu + preu * ( diesDeGarantia / 365) * 0.1);
     }
+
+    public float getPreu() { return setPreu(); }
 
     @Override
     public String toString() {

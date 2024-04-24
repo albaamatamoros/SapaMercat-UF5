@@ -1,9 +1,11 @@
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class SapaMercat {
     static ArrayList<Producte> productes = new ArrayList<Producte>();
+    static Map<String,Integer> carro = new HashMap<String,Integer>();
+
     static String opcio;
     static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) {
@@ -77,7 +79,7 @@ public class SapaMercat {
             }
         } while (!(opcio.equals("0")));
     }
-    //PRODUCTES
+    //AFEGIR PRODUCTES
     private static void afegirProducteAlimentacio(){
         String nom;
         float preu;
@@ -100,7 +102,9 @@ public class SapaMercat {
             System.out.print("Data de caducitat: ");
             dataCaducitat = scan.nextLine();
 
-            productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
+            //productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
+            carro.put(nom, 1);
+
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -128,6 +132,8 @@ public class SapaMercat {
             codiBarres = scan.nextLine();
 
             productes.add(new Textil(preu, nom, codiBarres, composicio));
+            carro.put(nom, 1);
+
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -156,6 +162,8 @@ public class SapaMercat {
             codiBarres = scan.nextLine();
 
             productes.add(new Electronica(preu, nom, codiBarres, garantia));
+            //carro.put(codiBarres, nom);
+
             //Mostrar Array
             for (int i = 0; i < productes.size(); i++) {
                 System.out.println(productes.get(i));
@@ -165,11 +173,19 @@ public class SapaMercat {
         }
     }
 
+    //PASSAR PER CAIXA
     public static void  passarPerCaixa(){
-
+        System.out.println("Carret");
     }
 
+    //MOSTRAR CARRET DE COMPRA
     public static void  mostrarCarretCompra (){
+        System.out.println(carro.toString());
 
+        carro.keySet().stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        for (String item : carro.keySet()) {
+            System.out.printf("%s -> %s\n",item,carro.get(item));
+        }
     }
 }
