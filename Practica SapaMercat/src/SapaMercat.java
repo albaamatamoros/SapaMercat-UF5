@@ -1,3 +1,5 @@
+import javax.swing.text.html.parser.Parser;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
@@ -102,7 +104,7 @@ public class SapaMercat {
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
-                if (nom.length() > 15) throw new Exception("- El nom del producte no pot ser superior a 15");
+                if (nom.length() > MAX_LLARG) throw new Exception("- El nom del producte no pot ser superior a 15");
 
                 System.out.print("preu: \t");
                 preu = scan.nextFloat();
@@ -117,9 +119,14 @@ public class SapaMercat {
                 System.out.print("Data de caducitat: ");
                 dataCaducitat = scan.nextLine();
 
+                //Cridem el mètode correctData per verificar el format de dataCaducita.
+                Alimentacio.correctData(dataCaducitat);
+
                 productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
                 carro.put(nom, codiBarres);
             }
+        } catch (ParseException e) {
+            System.out.println("- El format de <Data de caducitat> no és correcte");
         } catch (InputMismatchException e) {
             System.out.println("- Les dades introduïdes no són del tipus de dades demanades");
         } catch (Exception e){
@@ -143,7 +150,7 @@ public class SapaMercat {
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
-                if (nom.length() > 15) throw new Exception("- El nom del producte no pot ser superior a 15");
+                if (nom.length() > MAX_LLARG) throw new Exception("- El nom del producte no pot ser superior a 15");
 
                 System.out.print("preu: \t");
                 preu = scan.nextFloat();
@@ -185,7 +192,7 @@ public class SapaMercat {
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
-                if (nom.length() > 15) throw new Exception("- El nom del producte no pot ser superior a 15");
+                if (nom.length() > MAX_LLARG) throw new Exception("- El nom del producte no pot ser superior a 15");
 
                 System.out.print("preu: \t");
                 preu = scan.nextFloat();
