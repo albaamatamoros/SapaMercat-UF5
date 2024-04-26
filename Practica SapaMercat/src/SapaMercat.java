@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class SapaMercat {
     static ArrayList<Producte> productes = new ArrayList<Producte>();
-
     static Map<String, Integer> carro = new HashMap<String, Integer>();
     static String opcio;
     static Scanner scan = new Scanner(System.in);
@@ -185,7 +184,7 @@ public class SapaMercat {
         System.out.println("Data: " + new SimpleDateFormat("dd-MM-yyyy").format(data));
         System.out.println("-----------------------------");
 
-        //Mostrar Array
+        //Mostrar ArrayList
         for (int i = 0; i < productes.size(); i++) {
             System.out.println(productes.get(i));
         }

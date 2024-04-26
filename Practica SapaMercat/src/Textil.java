@@ -6,8 +6,20 @@ public class Textil extends Producte{
         this.composicioTextil = composicioTextil;
     }
 
+    public String getComposicioTextil() {
+        return composicioTextil;
+    }
+
+    public void setComposicioTextil(String composicioTextil) {
+        this.composicioTextil = composicioTextil;
+    }
+
+    public float getPreu() {
+        return preu;
+    }
+
     @Override
     public String toString() {
-        return nom + " 1 " + preu + " " + preu;
+        return nom + " 1 " + getPreu() + " " + getPreu();
     }
 }

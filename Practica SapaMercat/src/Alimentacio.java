@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Alimentacio extends Producte{
@@ -9,14 +10,20 @@ public class Alimentacio extends Producte{
         this.dataCaducitat = dataCaducitat;
     }
 
-    public String getPreu() {
-        Date caducitat = new Date(dataCaducitat);
-        Date dataActual = new Date();
+    public String getDataCaducitat() {
+        return dataCaducitat;
+    }
+
+    public void setDataCaducitat(String dataCaducitat) {
+        this.dataCaducitat = dataCaducitat;
+    }
+
+    public String getPreuCaducitat() {
         return dataCaducitat;
     }
 
     @Override
     public String toString() {
-        return nom + " 1 " + preu + " " + preu;
+        return nom + " 1 " + getPreuCaducitat() + " " + getPreuCaducitat();
     }
 }
