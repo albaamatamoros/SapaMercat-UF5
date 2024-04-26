@@ -4,7 +4,7 @@ public class Textil extends Producte{
     //CONSTRUCTOR Textil
     public Textil(float preu, String nom, String codiDeBarres, String composicioTextil) {
         super(preu, nom, codiDeBarres);
-        this.composicioTextil = composicioTextil;
+        setComposicioTextil(composicioTextil);
     }
 
     public String getComposicioTextil() {

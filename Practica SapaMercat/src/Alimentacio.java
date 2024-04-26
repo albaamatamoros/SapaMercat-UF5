@@ -1,4 +1,3 @@
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Alimentacio extends Producte{
@@ -8,7 +7,7 @@ public class Alimentacio extends Producte{
     //CONSTRUCTOR Alimentacio
     public Alimentacio(float preu, String nom, String codiDeBarres, String dataCaducitat) {
         super(preu, nom, codiDeBarres);
-        this.dataCaducitat = dataCaducitat;
+        setDataCaducitat(dataCaducitat);
     }
 
     public String getDataCaducitat() {
@@ -35,6 +34,8 @@ public class Alimentacio extends Producte{
 
     @Override
     public String toString() {
-        return String.format("%10s %10.2s", nom, getPreuCaducitat());
+        if (getPreuCaducitat() <= 0){ return String.format("%10s 0€", nom); }
+        else { return String.format("%10s %10.2s", nom, getPreuCaducitat()); }
+
     }
 }

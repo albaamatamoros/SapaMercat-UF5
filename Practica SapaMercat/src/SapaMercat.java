@@ -1,19 +1,19 @@
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
 public class SapaMercat {
-    static ArrayList<Producte> productes = new ArrayList<Producte>();
-    static Map<String, String> carro = new HashMap<String, String>();
-    static String opcio;
     static Scanner scan = new Scanner(System.in);
+    //ARRAYLIST
+    static ArrayList<Producte> productes = new ArrayList<Producte>();
+    //HASHMAP
+    static Map<String, String> carro = new HashMap<String, String>();
+    //VARIABLES GLOBALES
+    static String opcio;
+    private static final int MAX_CARRO = 100;
+
     public static void main(String[] args) {
         //Mostrem el menú d'inici
         menuInici();
@@ -92,24 +92,29 @@ public class SapaMercat {
         String dataCaducitat;
         String codiBarres;
         try {
-            System.out.println("Afegir aliment");
+            if (productes.size() == MAX_CARRO){
+                System.out.println("El carro està ple");
+            } else {
+                System.out.println("Afegir aliment");
 
-            System.out.print("Nom producte: \t");
-            nom = scan.nextLine();
+                System.out.print("Nom producte: \t");
+                nom = scan.nextLine();
 
-            System.out.print("preu: \t");
-            preu = scan.nextFloat();
-            scan.nextLine();
+                System.out.print("preu: \t");
+                preu = scan.nextFloat();
+                scan.nextLine();
 
-            System.out.print("Codi de barres: ");
-            codiBarres = scan.nextLine();
+                System.out.print("Codi de barres: ");
+                codiBarres = scan.nextLine();
 
-            System.out.print("Data de caducitat: ");
-            dataCaducitat = scan.nextLine();
+                System.out.print("Data de caducitat: ");
+                dataCaducitat = scan.nextLine();
 
-            productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
-            carro.put(nom, codiBarres);
-
+                productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
+                carro.put(nom, codiBarres);
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Les dades introduïdes no són del tipus de dades demanades (float)");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -121,24 +126,27 @@ public class SapaMercat {
         String composicio;
         String codiBarres;
         try {
-            System.out.println("Afegir tèxtil");
+            if (productes.size() == MAX_CARRO){
+                System.out.println("El carro està ple");
+            } else {
+                System.out.println("Afegir tèxtil");
 
-            System.out.print("Nom producte: \t");
-            nom = scan.nextLine();
+                System.out.print("Nom producte: \t");
+                nom = scan.nextLine();
 
-            System.out.print("preu: \t");
-            preu = scan.nextFloat();
-            scan.nextLine();
+                System.out.print("preu: \t");
+                preu = scan.nextFloat();
+                scan.nextLine();
 
-            System.out.print("Composició: ");
-            composicio = scan.nextLine();
+                System.out.print("Composició: ");
+                composicio = scan.nextLine();
 
-            System.out.print("Codi de barres: ");
-            codiBarres = scan.nextLine();
+                System.out.print("Codi de barres: ");
+                codiBarres = scan.nextLine();
 
-            productes.add(new Textil(preu, nom, codiBarres, composicio));
-            carro.put(nom, codiBarres);
-
+                productes.add(new Textil(preu, nom, codiBarres, composicio));
+                carro.put(nom, codiBarres);
+            }
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -149,33 +157,36 @@ public class SapaMercat {
         float preu;
         int garantia;
         String codiBarres;
+
         try {
-            System.out.println("Afegir electrònica");
+            if (productes.size() == MAX_CARRO){
+                System.out.println("El carro està ple");
+            } else {
+                System.out.println("Afegir electrònica");
 
-            System.out.print("Nom producte: \t");
-            nom = scan.nextLine();
+                System.out.print("Nom producte: \t");
+                nom = scan.nextLine();
 
-            System.out.print("preu: \t");
-            preu = scan.nextFloat();
-            scan.nextLine();
+                System.out.print("preu: \t");
+                preu = scan.nextFloat();
+                scan.nextLine();
 
-            System.out.print("Garantia (dies): ");
-            garantia = scan.nextInt();
-            scan.nextLine();
+                System.out.print("Garantia (dies): ");
+                garantia = scan.nextInt();
+                scan.nextLine();
 
-            System.out.print("Codi de barres: ");
-            codiBarres = scan.nextLine();
+                System.out.print("Codi de barres: ");
+                codiBarres = scan.nextLine();
 
-            productes.add(new Electronica(preu, nom, codiBarres, garantia));
-            carro.put(nom, codiBarres);
-
+                productes.add(new Electronica(preu, nom, codiBarres, garantia));
+                carro.put(nom, codiBarres);
+            }
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
 
     public static void  passarPerCaixa(){
-        Date data = new Date();
         LocalDate date = LocalDate.now();
         System.out.println("-----------------------------");
         System.out.println("SAPAMERCAT");
@@ -183,22 +194,15 @@ public class SapaMercat {
         System.out.println("Data: " + date);
         System.out.println("-----------------------------");
 
-        //Mostrar ArrayList
+        //Mostrar ArrayList amb llista de productes.
         productes.forEach(e -> System.out.println(e));
     }
 
     public static void  mostrarCarretCompra (){
-        int contador = 1;
         System.out.println("Carret");
-        for (String i : carro.values()) {
-            for (String j : carro.values()) {
-                if (Objects.equals(i, j)){
-                    contador++;
-                }
-            }
-            int finalContador = contador;
-            carro.forEach((key, value) -> System.out.println(key + " :: " + value + " -> " + finalContador));
-        }
+
+        //Buidem els productes del carro.
+        productes.clear();
         carro.clear();
     }
 }

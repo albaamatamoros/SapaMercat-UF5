@@ -14,6 +14,26 @@ public abstract class Producte{
         return preu;
     }
 
+    public void setPreu(float preu) {
+        this.preu = preu;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getCodiDeBarres() {
+        return codiDeBarres;
+    }
+
+    public void setCodiDeBarres(String codiDeBarres) {
+        this.codiDeBarres = codiDeBarres;
+    }
+
     @Override
     public String toString() {
         return "Producte{" +
