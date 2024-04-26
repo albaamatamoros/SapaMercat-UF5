@@ -3,8 +3,7 @@ public abstract class Producte{
     String nom;
     String codiDeBarres;
 
-    //Constructor Prodcute
-
+    //CONSTRUCTOR Producte
     public Producte(float preu, String nom, String codiDeBarres) {
         this.preu = preu;
         this.nom = nom;

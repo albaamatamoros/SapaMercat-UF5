@@ -5,6 +5,7 @@ public class Alimentacio extends Producte{
 
     String dataCaducitat;
 
+    //CONSTRUCTOR Alimentacio
     public Alimentacio(float preu, String nom, String codiDeBarres, String dataCaducitat) {
         super(preu, nom, codiDeBarres);
         this.dataCaducitat = dataCaducitat;
@@ -18,13 +19,16 @@ public class Alimentacio extends Producte{
         this.dataCaducitat = dataCaducitat;
     }
 
-    //Calcular el preu segons la data de caducitat.
+    //Calculem el preu segons la data de caducitat.
     public double getPreuCaducitat() {
+        //Creem un objecte Date que guarda la data i hora actual.
         Date data = new Date(System.currentTimeMillis());
         Date dataCad = new Date(dataCaducitat);
 
+        //Fem un càlcul però obtenir la diferència de dies entre dues dates.
         int dias = (int) ((dataCad.getTime() - data.getTime()));
 
+        //Retornem el nou preu del producte basant-nos en els dies que li queden per caducar.
         return preu - preu*((double) 1 /(dias+1)) + (preu * 0.1);
     }
 
