@@ -1,7 +1,6 @@
 import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 public class SapaMercat {
@@ -13,6 +12,7 @@ public class SapaMercat {
     //VARIABLES GLOBALES
     static String opcio;
     private static final int MAX_CARRO = 100;
+    private static final int MAX_LLARG = 15;
 
     public static void main(String[] args) {
         //Mostrem el menú d'inici
@@ -95,14 +95,21 @@ public class SapaMercat {
             if (productes.size() == MAX_CARRO){
                 System.out.println("El carro està ple");
             } else {
+                //Afegir un aliment al carro:
                 System.out.println("Afegir aliment");
 
                 System.out.print("Nom producte: \t");
                 nom = scan.nextLine();
 
+                //Exception nom superior a 15 caràcters.
+                if (nom.length() > 15) throw new Exception("- El nom del producte no pot ser superior a 15");
+
                 System.out.print("preu: \t");
                 preu = scan.nextFloat();
                 scan.nextLine();
+
+                //Exception preu inferior a 0.
+                if (preu < 0) throw new Exception("- El preu no pot ser inferior a 0");
 
                 System.out.print("Codi de barres: ");
                 codiBarres = scan.nextLine();
@@ -114,7 +121,7 @@ public class SapaMercat {
                 carro.put(nom, codiBarres);
             }
         } catch (InputMismatchException e) {
-            System.out.println("Les dades introduïdes no són del tipus de dades demanades (float)");
+            System.out.println("- Les dades introduïdes no són del tipus de dades demanades");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -129,14 +136,21 @@ public class SapaMercat {
             if (productes.size() == MAX_CARRO){
                 System.out.println("El carro està ple");
             } else {
+                //Afegir un tèxtil al carro:
                 System.out.println("Afegir tèxtil");
 
                 System.out.print("Nom producte: \t");
                 nom = scan.nextLine();
 
+                //Exception nom superior a 15 caràcters.
+                if (nom.length() > 15) throw new Exception("- El nom del producte no pot ser superior a 15");
+
                 System.out.print("preu: \t");
                 preu = scan.nextFloat();
                 scan.nextLine();
+
+                //Exception preu inferior a 0.
+                if (preu < 0) throw new Exception("- El preu no pot ser inferior a 0");
 
                 System.out.print("Composició: ");
                 composicio = scan.nextLine();
@@ -147,6 +161,8 @@ public class SapaMercat {
                 productes.add(new Textil(preu, nom, codiBarres, composicio));
                 carro.put(nom, codiBarres);
             }
+        } catch (InputMismatchException e) {
+            System.out.println("- Les dades introduïdes no són del tipus de dades demanades");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -162,14 +178,21 @@ public class SapaMercat {
             if (productes.size() == MAX_CARRO){
                 System.out.println("El carro està ple");
             } else {
+                //Afegir un electrònica al carro:
                 System.out.println("Afegir electrònica");
 
                 System.out.print("Nom producte: \t");
                 nom = scan.nextLine();
 
+                //Exception nom superior a 15 caràcters.
+                if (nom.length() > 15) throw new Exception("- El nom del producte no pot ser superior a 15");
+
                 System.out.print("preu: \t");
                 preu = scan.nextFloat();
                 scan.nextLine();
+
+                //Exception preu inferior a 0.
+                if (preu < 0) throw new Exception("- El preu no pot ser inferior a 0");
 
                 System.out.print("Garantia (dies): ");
                 garantia = scan.nextInt();
@@ -181,6 +204,8 @@ public class SapaMercat {
                 productes.add(new Electronica(preu, nom, codiBarres, garantia));
                 carro.put(nom, codiBarres);
             }
+        } catch (InputMismatchException e) {
+            System.out.println("- Les dades introduïdes no són del tipus de dades demanades");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -193,9 +218,10 @@ public class SapaMercat {
         System.out.println("-----------------------------");
         System.out.println("Data: " + date);
         System.out.println("-----------------------------");
-
         //Mostrar ArrayList amb llista de productes.
         productes.forEach(e -> System.out.println(e));
+        System.out.println("-----------------------------");
+        System.out.println("Total: ");
     }
 
     public static void  mostrarCarretCompra (){
