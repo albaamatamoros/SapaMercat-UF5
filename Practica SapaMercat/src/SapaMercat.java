@@ -1,4 +1,4 @@
-import javax.swing.text.html.parser.Parser;
+import java.io.*;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
@@ -17,7 +17,7 @@ public class SapaMercat {
     private static final int MAX_LLARG = 15;
 
     public static void main(String[] args) {
-        //Mostrem el menú d'inici
+        //Cridem el mètode menuInici.
         menuInici();
     }
 
@@ -127,10 +127,13 @@ public class SapaMercat {
             }
         } catch (ParseException e) {
             System.out.println("- El format de <Data de caducitat> no és correcte");
+            logException(e);
         } catch (InputMismatchException e) {
             System.out.println("- Les dades introduïdes no són del tipus de dades demanades");
+            logException(e);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            logException(e);
         }
     }
 
@@ -170,8 +173,10 @@ public class SapaMercat {
             }
         } catch (InputMismatchException e) {
             System.out.println("- Les dades introduïdes no són del tipus de dades demanades");
+            logException(e);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            logException(e);
         }
     }
 
@@ -213,8 +218,10 @@ public class SapaMercat {
             }
         } catch (InputMismatchException e) {
             System.out.println("- Les dades introduïdes no són del tipus de dades demanades");
+            logException(e);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            logException(e);
         }
     }
 
@@ -237,5 +244,25 @@ public class SapaMercat {
         //Buidem els productes del carro.
         productes.clear();
         carro.clear();
+    }
+
+    public static void logException(Exception e) {
+        try {
+            //Creem el fitxer on es registraran totes les excepcions.
+            File fitxer = new File("./logs/Exceptions.dat");
+            //Donem l'arxiu i el valor "true" per saber que el fitxer no s'ha de sobreescriure.
+            FileOutputStream fileOutputStream = new FileOutputStream(fitxer, true);
+            PrintStream writer = new PrintStream(fileOutputStream);
+
+            //Agafem la data amb l'hora i tots els detalls possibles perquè quedi constància de quan va succeir aquest excepció.
+            Date data = new Date(System.currentTimeMillis());
+
+            //Escrivim al fitxer totes les excepcions.
+            writer.println("Excepció, " + data + " " + " : " + e.getMessage());
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("- No es troba el fitxer");
+            logException(e);
+        }
     }
 }
