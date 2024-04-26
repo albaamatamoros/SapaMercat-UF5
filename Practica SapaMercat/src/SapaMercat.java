@@ -192,7 +192,7 @@ public class SapaMercat {
     }
 
     public static void  mostrarCarretCompra (){
-
         System.out.println("Carret");
+        carro.forEach((key,item)-> System.out.println(key +" -> "+carro.get(key)));
     }
 }
