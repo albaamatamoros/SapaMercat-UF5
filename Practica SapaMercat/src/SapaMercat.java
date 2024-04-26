@@ -1,13 +1,18 @@
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
+
 public class SapaMercat {
     static ArrayList<Producte> productes = new ArrayList<Producte>();
-    static Map<String,Integer> carro = new HashMap<String,Integer>();
 
+    static Map<String, Integer> carro = new HashMap<String, Integer>();
     static String opcio;
     static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) {
@@ -81,7 +86,7 @@ public class SapaMercat {
             }
         } while (!(opcio.equals("0")));
     }
-    //AFEGIR PRODUCTES
+    //PRODUCTES
     private static void afegirProducteAlimentacio(){
         String nom;
         float preu;
@@ -134,8 +139,6 @@ public class SapaMercat {
             codiBarres = scan.nextLine();
 
             productes.add(new Textil(preu, nom, codiBarres, composicio));
-            carro.put(nom, 1);
-
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -165,12 +168,15 @@ public class SapaMercat {
 
             productes.add(new Electronica(preu, nom, codiBarres, garantia));
             carro.put(nom, 1);
+            //Mostrar Array
+            for (int i = 0; i < productes.size(); i++) {
+                System.out.println(productes.get(i));
+            }
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
 
-    //PASSAR PER CAIXA
     public static void  passarPerCaixa(){
         Date data = new Date();
         System.out.println("-----------------------------");
@@ -185,14 +191,8 @@ public class SapaMercat {
         }
     }
 
-    //MOSTRAR CARRET DE COMPRA
     public static void  mostrarCarretCompra (){
+
         System.out.println("Carret");
-
-        carro.keySet().stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
-        for (String item : carro.keySet()) {
-            System.out.printf("%s -> %s\n",item,carro.get(item));
-        }
     }
 }
