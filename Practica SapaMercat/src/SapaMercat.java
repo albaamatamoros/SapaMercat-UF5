@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -102,7 +104,7 @@ public class SapaMercat {
             System.out.print("Data de caducitat: ");
             dataCaducitat = scan.nextLine();
 
-            //productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
+            productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
             carro.put(nom, 1);
 
         } catch (Exception e){
@@ -162,12 +164,7 @@ public class SapaMercat {
             codiBarres = scan.nextLine();
 
             productes.add(new Electronica(preu, nom, codiBarres, garantia));
-            //carro.put(codiBarres, nom);
-
-            //Mostrar Array
-            for (int i = 0; i < productes.size(); i++) {
-                System.out.println(productes.get(i));
-            }
+            carro.put(nom, 1);
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -175,12 +172,22 @@ public class SapaMercat {
 
     //PASSAR PER CAIXA
     public static void  passarPerCaixa(){
-        System.out.println("Carret");
+        Date data = new Date();
+        System.out.println("-----------------------------");
+        System.out.println("SAPAMERCAT");
+        System.out.println("-----------------------------");
+        System.out.println("Data: " + new SimpleDateFormat("dd-MM-yyyy").format(data));
+        System.out.println("-----------------------------");
+
+        //Mostrar Array
+        for (int i = 0; i < productes.size(); i++) {
+            System.out.println(productes.get(i));
+        }
     }
 
     //MOSTRAR CARRET DE COMPRA
     public static void  mostrarCarretCompra (){
-        System.out.println(carro.toString());
+        System.out.println("Carret");
 
         carro.keySet().stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 

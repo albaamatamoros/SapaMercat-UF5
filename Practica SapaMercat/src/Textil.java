@@ -8,11 +8,6 @@ public class Textil extends Producte{
 
     @Override
     public String toString() {
-        return "Textil{" +
-                "composicioTextil='" + composicioTextil + '\'' +
-                ", preu=" + preu +
-                ", nom='" + nom + '\'' +
-                ", codiDeBarres=" + codiDeBarres +
-                '}';
+        return nom + " 1 " + preu + " " + preu;
     }
 }
