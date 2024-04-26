@@ -10,6 +10,10 @@ public abstract class Producte{
         this.codiDeBarres = codiDeBarres;
     }
 
+    public float getPreu() {
+        return preu;
+    }
+
     @Override
     public String toString() {
         return "Producte{" +

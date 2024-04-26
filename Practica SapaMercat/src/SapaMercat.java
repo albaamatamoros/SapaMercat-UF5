@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class SapaMercat {
     static ArrayList<Producte> productes = new ArrayList<Producte>();
-    static Map<String, Integer> carro = new HashMap<String, Integer>();
+    static Map<String, String> carro = new HashMap<String, String>();
     static String opcio;
     static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) {
@@ -108,7 +108,7 @@ public class SapaMercat {
             dataCaducitat = scan.nextLine();
 
             productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
-            carro.put(nom, 1);
+            carro.put(nom, codiBarres);
 
         } catch (Exception e){
             System.out.println(e.getMessage());
@@ -137,6 +137,8 @@ public class SapaMercat {
             codiBarres = scan.nextLine();
 
             productes.add(new Textil(preu, nom, codiBarres, composicio));
+            carro.put(nom, codiBarres);
+
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -165,11 +167,8 @@ public class SapaMercat {
             codiBarres = scan.nextLine();
 
             productes.add(new Electronica(preu, nom, codiBarres, garantia));
-            carro.put(nom, 1);
-            //Mostrar Array
-            for (int i = 0; i < productes.size(); i++) {
-                System.out.println(productes.get(i));
-            }
+            carro.put(nom, codiBarres);
+
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -185,13 +184,21 @@ public class SapaMercat {
         System.out.println("-----------------------------");
 
         //Mostrar ArrayList
-        for (int i = 0; i < productes.size(); i++) {
-            System.out.println(productes.get(i));
-        }
+        productes.forEach(e -> System.out.println(e));
     }
 
     public static void  mostrarCarretCompra (){
+        int contador = 1;
         System.out.println("Carret");
-        carro.forEach((key,item)-> System.out.println(key +" -> "+carro.get(key)));
+        for (String i : carro.values()) {
+            for (String j : carro.values()) {
+                if (Objects.equals(i, j)){
+                    contador++;
+                }
+            }
+            int finalContador = contador;
+            carro.forEach((key, value) -> System.out.println(key + " :: " + value + " -> " + finalContador));
+        }
+        carro.clear();
     }
 }

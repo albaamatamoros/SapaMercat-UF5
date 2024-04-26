@@ -21,6 +21,6 @@ public class Electronica extends Producte{
 
     @Override
     public String toString() {
-        return nom + " 1 " + getPreu() + " " + getPreu();
+        return String.format("%10s %10.2s", nom, getPreu());
     }
 }
