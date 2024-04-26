@@ -1,10 +1,10 @@
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -92,7 +92,6 @@ public class SapaMercat {
         String dataCaducitat;
         String codiBarres;
         try {
-            //
             System.out.println("Afegir aliment");
 
             System.out.print("Nom producte: \t");
@@ -178,10 +177,11 @@ public class SapaMercat {
 
     public static void  passarPerCaixa(){
         Date data = new Date();
+        LocalDate date = LocalDate.now();
         System.out.println("-----------------------------");
         System.out.println("SAPAMERCAT");
         System.out.println("-----------------------------");
-        System.out.println("Data: " + new SimpleDateFormat("dd-MM-yyyy").format(data));
+        System.out.println("Data: " + date);
         System.out.println("-----------------------------");
 
         //Mostrar ArrayList

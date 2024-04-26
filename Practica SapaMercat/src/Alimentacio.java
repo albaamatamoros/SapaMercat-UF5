@@ -18,8 +18,14 @@ public class Alimentacio extends Producte{
         this.dataCaducitat = dataCaducitat;
     }
 
-    public String getPreuCaducitat() {
-        return dataCaducitat;
+    //Calcular el preu segons la data de caducitat.
+    public double getPreuCaducitat() {
+        Date data = new Date(System.currentTimeMillis());
+        Date dataCad = new Date(dataCaducitat);
+
+        int dias = (int) ((dataCad.getTime() - data.getTime()));
+
+        return preu - preu*((double) 1 /(dias+1)) + (preu * 0.1);
     }
 
     @Override
