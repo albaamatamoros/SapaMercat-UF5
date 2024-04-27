@@ -13,6 +13,7 @@ public class SapaMercat {
     static ArrayList<Producte> productes = new ArrayList<Producte>();
     //Utilitzem LinkedHashMap perquè el HashMap quedi ordenat segons com introduïm els productes.
     static LinkedHashMap<String, String[]> carro = new LinkedHashMap<>();
+    static LinkedHashMap<String, String[]> caixa = new LinkedHashMap<>();
     //VARIABLES GLOBALS
     static String opcio;
     private static final int MAX_CARRO = 100;
@@ -127,11 +128,11 @@ public class SapaMercat {
 
                 //Creem l'objecte Alimentació i el fiquem a l'arraylist productes.
                 productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
-                //Cridem el mètode añadirACarro.
-                afegirACarro(nom, codiBarres);
 
-                //Cridem al mètode llegirPreuTextil per comprovar el preu al fitxer UpdateTextilPrices.dat
-                llegirPreuTextil();
+                //Cridem el mètode afegirACarro.
+                afegirACarro(nom, codiBarres);
+                //Cridem el mètode afegirACarroPerCaixa
+                afegirACarroPerCaixa(nom, codiBarres, preu);
             }
         } catch (ParseException e) {
             System.out.println("El format de <Data de caducitat> no és correcte");
@@ -177,9 +178,16 @@ public class SapaMercat {
                 System.out.print("Codi de barres: ");
                 codiBarres = scan.nextLine();
 
+                //Creem l'objecte Textil i el fiquem a l'arraylist productes.
                 productes.add(new Textil(preu, nom, codiBarres, composicio));
+
                 //Cridem el mètode añadirACarro.
                 afegirACarro(nom, codiBarres);
+                //Cridem el mètode afegirACarroPerCaixa
+                afegirACarroPerCaixa(nom, codiBarres, preu);
+
+                //Cridem al mètode llegirPreuTextil per comprovar el preu al fitxer UpdateTextilPrices.dat
+                llegirPreuTextil();
             }
         } catch (InputMismatchException e) {
             System.out.println("Les dades introduïdes no són del tipus de dades demanades");
@@ -224,10 +232,13 @@ public class SapaMercat {
                 System.out.print("Codi de barres: ");
                 codiBarres = scan.nextLine();
 
+                //Creem l'objecte Electronica i el fiquem a l'arraylist productes.
                 productes.add(new Electronica(preu, nom, codiBarres, garantia));
 
                 //Cridem el mètode añadirACarro.
                 afegirACarro(nom, codiBarres);
+                //Cridem el mètode afegirACarroPerCaixa
+                afegirACarroPerCaixa(nom, codiBarres, preu);
             }
         } catch (InputMismatchException e) {
             System.out.println("Les dades introduïdes no són del tipus de dades demanades");
@@ -246,18 +257,36 @@ public class SapaMercat {
         System.out.println("-----------------------------");
         System.out.println("Data: " + date);
         System.out.println("-----------------------------");
-        //Mostrar ArrayList amb llista de productes.
-        productes.forEach(e -> System.out.println(e));
+        //Mostrar ArrayList amb llista de productes.8
+        caixa.forEach((k,v) -> System.out.println(v[0] + " - " + v[1] + " - " + v[2] + " : " + (Float.parseFloat(v[2]) * (Float.parseFloat(v[1])))));
         System.out.println("-----------------------------");
-        System.out.println("Total: ");
+        System.out.println("Total :");
         // Limpiar los productos del carro
         productes.clear();
         carro.clear();
+        caixa.clear();
+    }
+
+    public static void afegirACarroPerCaixa(String nom, String codi, float preu){
+        //Afegim l'objecte Alimentació,Textil o Electronica en el LinkedHashMap "caixa". (En aquest comparem CodiBarres + preuUnitari)
+        String codiPreu = codi + preu;
+        if (!(caixa.containsKey(codiPreu))){
+            String[] valorCarro = new String[3];
+            valorCarro[0] = nom;
+            valorCarro[1] = "1";
+            valorCarro[2] = preu + "";
+            caixa.put(codiPreu, valorCarro);
+        } else {
+            String[] valorCarro = new String[3];
+            valorCarro[0] = caixa.get(codiPreu)[0];
+            valorCarro[1] = (Integer.parseInt(caixa.get(codiPreu)[1]) + 1) + "";
+            valorCarro[2] = preu + "";
+            caixa.replace(codiPreu, valorCarro);
+        }
     }
 
     public static void afegirACarro(String nom, String codi){
-        //Afegim l'objecte Alimentació,Textil o Electronica en el LinkedHashMap "carro".
-        //
+        //Afegim l'objecte Alimentació,Textil o Electronica en el LinkedHashMap "carro". (En aquest comparem CodiBarres)
         if (!(carro.containsKey(codi))){
             String[] valorCarro = new String[2];
             valorCarro[0] = nom;
