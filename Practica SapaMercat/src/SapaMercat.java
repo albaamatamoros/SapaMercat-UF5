@@ -1,20 +1,22 @@
 import java.io.*;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class SapaMercat {
     static Scanner scan = new Scanner(System.in);
     //ARRAYLIST i HASHMAP
     static ArrayList<Producte> productes = new ArrayList<Producte>();
-    static Map<String, String> carro = new HashMap<String, String>();
+    //Utilitzem LinkedHashMap perquè el HashMap quedi ordenat segons com introduïm els productes.
+    static LinkedHashMap<String, String[]> carro = new LinkedHashMap<>();
     //VARIABLES GLOBALS
     static String opcio;
     private static final int MAX_CARRO = 100;
     private static final int MAX_LLARG = 15;
-    static int contador = 0;
 
     public static void main(String[] args) {
         //Cridem el mètode menuInici.
@@ -66,7 +68,6 @@ public class SapaMercat {
             System.out.println("2) Tèxtil");
             System.out.println("3) Electrònica");
             System.out.println("0) Tornar");
-            System.out.println(contador);
             opcio = scan.nextLine();
             switch (opcio) {
                 case "1":
@@ -106,14 +107,14 @@ public class SapaMercat {
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
-                if (nom.length() > MAX_LLARG) throw new Exception("- El nom del producte no pot ser superior a 15");
+                if (nom.length() > MAX_LLARG) throw new Exception("El nom del producte no pot ser superior a 15");
 
                 System.out.print("preu: \t");
                 preu = scan.nextFloat();
                 scan.nextLine();
 
                 //Exception preu inferior a 0.
-                if (preu < 0) throw new Exception("- El preu no pot ser inferior a 0");
+                if (preu < 0) throw new Exception("El preu no pot ser inferior a 0");
 
                 System.out.print("Codi de barres: ");
                 codiBarres = scan.nextLine();
@@ -126,16 +127,17 @@ public class SapaMercat {
 
                 //Creem l'objecte Alimentació i el fiquem a l'arraylist productes.
                 productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
-                //Afegim l'objecte Alimentació en un HashMap "carro".
-                carro.put(nom, codiBarres);
+                //Cridem el mètode añadirACarro.
+                afegirACarro(nom, codiBarres);
 
-                llegirPrices();
+                //Cridem al mètode llegirPreuTextil per comprovar el preu al fitxer UpdateTextilPrices.dat
+                llegirPreuTextil();
             }
         } catch (ParseException e) {
-            System.out.println("- El format de <Data de caducitat> no és correcte");
+            System.out.println("El format de <Data de caducitat> no és correcte");
             logException(e);
         } catch (InputMismatchException e) {
-            System.out.println("- Les dades introduïdes no són del tipus de dades demanades");
+            System.out.println("Les dades introduïdes no són del tipus de dades demanades");
             logException(e);
         } catch (Exception e){
             System.out.println(e.getMessage());
@@ -160,14 +162,14 @@ public class SapaMercat {
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
-                if (nom.length() > MAX_LLARG) throw new Exception("- El nom del producte no pot ser superior a 15");
+                if (nom.length() > MAX_LLARG) throw new Exception("El nom del producte no pot ser superior a 15");
 
                 System.out.print("preu: \t");
                 preu = scan.nextFloat();
                 scan.nextLine();
 
                 //Exception preu inferior a 0.
-                if (preu < 0) throw new Exception("- El preu no pot ser inferior a 0");
+                if (preu < 0) throw new Exception("El preu no pot ser inferior a 0");
 
                 System.out.print("Composició: ");
                 composicio = scan.nextLine();
@@ -176,10 +178,11 @@ public class SapaMercat {
                 codiBarres = scan.nextLine();
 
                 productes.add(new Textil(preu, nom, codiBarres, composicio));
-                carro.put(nom, codiBarres);
+                //Cridem el mètode añadirACarro.
+                afegirACarro(nom, codiBarres);
             }
         } catch (InputMismatchException e) {
-            System.out.println("- Les dades introduïdes no són del tipus de dades demanades");
+            System.out.println("Les dades introduïdes no són del tipus de dades demanades");
             logException(e);
         } catch (Exception e){
             System.out.println(e.getMessage());
@@ -187,7 +190,6 @@ public class SapaMercat {
         }
     }
 
-    //
     private static void afegirProducteElectronica(){
         String nom;
         float preu;
@@ -206,14 +208,14 @@ public class SapaMercat {
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
-                if (nom.length() > MAX_LLARG) throw new Exception("- El nom del producte no pot ser superior a 15");
+                if (nom.length() > MAX_LLARG) throw new Exception("El nom del producte no pot ser superior a 15");
 
                 System.out.print("preu: \t");
                 preu = scan.nextFloat();
                 scan.nextLine();
 
                 //Exception preu inferior a 0.
-                if (preu < 0) throw new Exception("- El preu no pot ser inferior a 0");
+                if (preu < 0) throw new Exception("El preu no pot ser inferior a 0");
 
                 System.out.print("Garantia (dies): ");
                 garantia = scan.nextInt();
@@ -223,10 +225,12 @@ public class SapaMercat {
                 codiBarres = scan.nextLine();
 
                 productes.add(new Electronica(preu, nom, codiBarres, garantia));
-                carro.put(nom, codiBarres);
+
+                //Cridem el mètode añadirACarro.
+                afegirACarro(nom, codiBarres);
             }
         } catch (InputMismatchException e) {
-            System.out.println("- Les dades introduïdes no són del tipus de dades demanades");
+            System.out.println("Les dades introduïdes no són del tipus de dades demanades");
             logException(e);
         } catch (Exception e){
             System.out.println(e.getMessage());
@@ -246,15 +250,30 @@ public class SapaMercat {
         productes.forEach(e -> System.out.println(e));
         System.out.println("-----------------------------");
         System.out.println("Total: ");
+        // Limpiar los productos del carro
+        productes.clear();
+        carro.clear();
+    }
+
+    public static void afegirACarro(String nom, String codi){
+        //Afegim l'objecte Alimentació,Textil o Electronica en el LinkedHashMap "carro".
+        //
+        if (!(carro.containsKey(codi))){
+            String[] valorCarro = new String[2];
+            valorCarro[0] = nom;
+            valorCarro[1] = "1";
+            carro.put(codi, valorCarro);
+        } else {
+            String[] valorCarro = new String[2];
+            valorCarro[0] = carro.get(codi)[0];
+            valorCarro[1] = (Integer.parseInt(carro.get(codi)[1]) + 1) + "" ;
+            carro.replace(codi, valorCarro);
+        }
     }
 
     //Mètode per veure tots els productes del carro.
     public static void  mostrarCarretCompra (){
-        System.out.println("Carret");
-
-        //Buidem els productes del carro.
-        productes.clear();
-        carro.clear();
+        carro.forEach((k,v) -> System.out.println(v[0] + " -> " + v[1]));
     }
 
     //Mètode per guardar excepcions en un fitxer .dat
@@ -268,9 +287,11 @@ public class SapaMercat {
 
             //Agafem la data amb l'hora i tots els detalls possibles perquè quedi constància de quan va succeir aquest excepció.
             Date data = new Date(System.currentTimeMillis());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy, HH:mm:ss");
+
 
             //Escrivim al fitxer totes les excepcions.
-            writer.println("Excepció, " + data + " " + " : " + e.getMessage());
+            writer.println("Excepció : " + simpleDateFormat.format(data) + " " + " : " + e.getMessage());
             writer.close();
         } catch (FileNotFoundException ex) {
             System.out.println("- No es troba el fitxer");
@@ -281,21 +302,12 @@ public class SapaMercat {
         }
     }
 
-    public static void llegirPrices(){
+    public static void llegirPreuTextil(){
         try {
             File fitxer = new File("./updates/UpdateTextilPrices.dat");
             FileReader reader = new FileReader(fitxer);
             BufferedReader br = new BufferedReader(reader);
             String fila;
-
-            while((fila = br.readLine()) != null) {
-                String[] valor = fila.split(",");
-                for (String i : carro.values()) {
-                    if (i.equals(valor[1])){
-                        contador = 1;
-                    }
-                }
-            }
         } catch (Exception e) {
 
         }

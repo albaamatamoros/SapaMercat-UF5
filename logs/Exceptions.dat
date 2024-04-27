@@ -1,1 +1,6 @@
-Esta línea no se sobrescribirá.
+Excepció : 27 abr 2024, 19:38:09  : El nom del producte no pot ser superior a 15
+Excepció : 27 abr 2024, 19:38:13  : null
+Excepció : 27 abr 2024, 19:38:20  : Unparseable date: "1"
+Excepció : 27 abr 2024, 19:39:46  : El nom del producte no pot ser superior a 15
+Excepció : 27 abr 2024, 19:39:53  : Unparseable date: "1"
+Excepció : 27 abr 2024, 19:39:55  : null

@@ -26,7 +26,7 @@ public abstract class Producte{
         this.nom = nom;
     }
 
-    public String getCodiDeBarres() {
+    public String getCodiBarres() {
         return codiDeBarres;
     }
 
