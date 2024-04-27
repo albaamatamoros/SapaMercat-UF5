@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class SapaMercat {
     static Scanner scan = new Scanner(System.in);
@@ -90,7 +89,8 @@ public class SapaMercat {
             }
         } while (!(opcio.equals("0")));
     }
-    //AFEGIR PRODUCTES
+    //AFEGIR PRODUCTES:
+    //Mètode per afegir un producte alimentacio.
     private static void afegirProducteAlimentacio(){
         String nom;
         float preu;
@@ -146,6 +146,7 @@ public class SapaMercat {
         }
     }
 
+    //Mètode per afegir un producte textil.
     private static void afegirProducteTextil(){
         String nom;
         float preu;
@@ -198,6 +199,7 @@ public class SapaMercat {
         }
     }
 
+    //Mètode per afegir un producte electronic.
     private static void afegirProducteElectronica(){
         String nom;
         float preu;
@@ -249,24 +251,27 @@ public class SapaMercat {
         }
     }
 
+    //PASSAR PER CAIXA:
     //Mètode per saber el valor total de tota la compra més els detalls dels productes.
     public static void  passarPerCaixa(){
         LocalDate date = LocalDate.now();
+        //Menú tiquet.
         System.out.println("-----------------------------");
         System.out.println("SAPAMERCAT");
         System.out.println("-----------------------------");
         System.out.println("Data: " + date);
         System.out.println("-----------------------------");
-        //Mostrar ArrayList amb llista de productes.8
+        //Mostrar LinkedHashMap amb els productes.
         caixa.forEach((k,v) -> System.out.println(v[0] + " - " + v[1] + " - " + v[2] + " : " + (Float.parseFloat(v[2]) * (Float.parseFloat(v[1])))));
         System.out.println("-----------------------------");
         System.out.println("Total :");
-        // Limpiar los productos del carro
+        // Limpiar los productos del carro, de la caixa i de la llista productes.
         productes.clear();
         carro.clear();
         caixa.clear();
     }
 
+    //Mètode per afegir a un LinkedHashMap caixa, els valors necessaris a imprimir en passarPerCaixa i contar les unitats dels productes.
     public static void afegirACarroPerCaixa(String nom, String codi, float preu){
         //Afegim l'objecte Alimentació,Textil o Electronica en el LinkedHashMap "caixa". (En aquest comparem CodiBarres + preuUnitari)
         String codiPreu = codi + preu;
@@ -285,6 +290,8 @@ public class SapaMercat {
         }
     }
 
+    //MOSTRAR CARRO:
+    //Mètode per afegir a un LinkedHashMap carro, els valors necessaris a imprimir en mostrarCarro i contar les unitats dels productes.
     public static void afegirACarro(String nom, String codi){
         //Afegim l'objecte Alimentació,Textil o Electronica en el LinkedHashMap "carro". (En aquest comparem CodiBarres)
         if (!(carro.containsKey(codi))){
@@ -305,6 +312,7 @@ public class SapaMercat {
         carro.forEach((k,v) -> System.out.println(v[0] + " -> " + v[1]));
     }
 
+    //FITXER EXCEPTION:
     //Mètode per guardar excepcions en un fitxer .dat
     public static void logException(Exception e) {
         try {
@@ -331,6 +339,8 @@ public class SapaMercat {
         }
     }
 
+    //FITXER UPDATETEXTILPRICES.DAT:
+    //Mètode per llegir el fitxer UpdateTextilPrices i comprovar els preus segons el codi.
     public static void llegirPreuTextil(){
         try {
             File fitxer = new File("./updates/UpdateTextilPrices.dat");
