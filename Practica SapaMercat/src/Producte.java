@@ -1,4 +1,6 @@
-public abstract class Producte{
+import java.util.Comparator;
+
+public abstract class Producte implements Comparable, Comparator {
     float preu;
     String nom;
     String codiDeBarres;
