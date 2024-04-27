@@ -7,21 +7,21 @@ import java.util.Scanner;
 
 public class SapaMercat {
     static Scanner scan = new Scanner(System.in);
-    //ARRAYLIST
+    //ARRAYLIST i HASHMAP
     static ArrayList<Producte> productes = new ArrayList<Producte>();
-    //HASHMAP
     static Map<String, String> carro = new HashMap<String, String>();
-    //VARIABLES GLOBALES
+    //VARIABLES GLOBALS
     static String opcio;
     private static final int MAX_CARRO = 100;
     private static final int MAX_LLARG = 15;
+    static int contador = 0;
 
     public static void main(String[] args) {
         //Cridem el mètode menuInici.
         menuInici();
     }
 
-    //MENÚS:
+    //MENÚ INICI:
     public static void menuInici(){
         //Menú INICI
         do {
@@ -56,7 +56,7 @@ public class SapaMercat {
     }
 
     public static void introduirProducte(){
-        //Menú PRODUCTE
+        //MENÚ PRODUCTE:
         do {
             System.out.println("BENVINGUT AL SAPAMERCAT");
             System.out.println("---------------");
@@ -66,6 +66,7 @@ public class SapaMercat {
             System.out.println("2) Tèxtil");
             System.out.println("3) Electrònica");
             System.out.println("0) Tornar");
+            System.out.println(contador);
             opcio = scan.nextLine();
             switch (opcio) {
                 case "1":
@@ -87,13 +88,14 @@ public class SapaMercat {
             }
         } while (!(opcio.equals("0")));
     }
-    //PRODUCTES
+    //AFEGIR PRODUCTES
     private static void afegirProducteAlimentacio(){
         String nom;
         float preu;
         String dataCaducitat;
         String codiBarres;
         try {
+            //Fem un if per comprovar que al carro no entrin més de 100 productes.
             if (productes.size() == MAX_CARRO){
                 System.out.println("El carro està ple");
             } else {
@@ -122,8 +124,12 @@ public class SapaMercat {
                 //Cridem el mètode correctData per verificar el format de dataCaducita.
                 Alimentacio.correctData(dataCaducitat);
 
+                //Creem l'objecte Alimentació i el fiquem a l'arraylist productes.
                 productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
+                //Afegim l'objecte Alimentació en un HashMap "carro".
                 carro.put(nom, codiBarres);
+
+                llegirPrices();
             }
         } catch (ParseException e) {
             System.out.println("- El format de <Data de caducitat> no és correcte");
@@ -143,6 +149,7 @@ public class SapaMercat {
         String composicio;
         String codiBarres;
         try {
+            //Fem un if per comprovar que al carro no entrin més de 100 productes.
             if (productes.size() == MAX_CARRO){
                 System.out.println("El carro està ple");
             } else {
@@ -180,6 +187,7 @@ public class SapaMercat {
         }
     }
 
+    //
     private static void afegirProducteElectronica(){
         String nom;
         float preu;
@@ -187,6 +195,7 @@ public class SapaMercat {
         String codiBarres;
 
         try {
+            //Fem un if per comprovar que al carro no entrin més de 100 productes.
             if (productes.size() == MAX_CARRO){
                 System.out.println("El carro està ple");
             } else {
@@ -225,6 +234,7 @@ public class SapaMercat {
         }
     }
 
+    //Mètode per saber el valor total de tota la compra més els detalls dels productes.
     public static void  passarPerCaixa(){
         LocalDate date = LocalDate.now();
         System.out.println("-----------------------------");
@@ -238,6 +248,7 @@ public class SapaMercat {
         System.out.println("Total: ");
     }
 
+    //Mètode per veure tots els productes del carro.
     public static void  mostrarCarretCompra (){
         System.out.println("Carret");
 
@@ -246,23 +257,47 @@ public class SapaMercat {
         carro.clear();
     }
 
+    //Mètode per guardar excepcions en un fitxer .dat
     public static void logException(Exception e) {
         try {
             //Creem el fitxer on es registraran totes les excepcions.
             File fitxer = new File("./logs/Exceptions.dat");
-            //Donem l'arxiu i el valor "true" per saber que el fitxer no s'ha de sobreescriure.
-            FileOutputStream fileOutputStream = new FileOutputStream(fitxer, true);
-            PrintStream writer = new PrintStream(fileOutputStream);
+            //Donem l'arxiu i el valor "true", aquest ultim és un indicador perquè afegeixi les dades al final de l'arxiu.
+            FileOutputStream file = new FileOutputStream(fitxer, true);
+            PrintStream writer = new PrintStream(file);
 
             //Agafem la data amb l'hora i tots els detalls possibles perquè quedi constància de quan va succeir aquest excepció.
             Date data = new Date(System.currentTimeMillis());
 
             //Escrivim al fitxer totes les excepcions.
             writer.println("Excepció, " + data + " " + " : " + e.getMessage());
-
+            writer.close();
         } catch (FileNotFoundException ex) {
             System.out.println("- No es troba el fitxer");
             logException(e);
+        } catch (Exception ex){
+            System.out.println("- No s'ha pogut escriure al fitxer");
+            logException(e);
+        }
+    }
+
+    public static void llegirPrices(){
+        try {
+            File fitxer = new File("./updates/UpdateTextilPrices.dat");
+            FileReader reader = new FileReader(fitxer);
+            BufferedReader br = new BufferedReader(reader);
+            String fila;
+
+            while((fila = br.readLine()) != null) {
+                String[] valor = fila.split(",");
+                for (String i : carro.values()) {
+                    if (i.equals(valor[1])){
+                        contador = 1;
+                    }
+                }
+            }
+        } catch (Exception e) {
+
         }
     }
 }
