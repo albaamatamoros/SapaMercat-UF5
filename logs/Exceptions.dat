@@ -9,3 +9,8 @@ Excepció : 27 abr 2024, 20:37:13  : Cannot load from object array because the r
 Excepció : 27 abr 2024, 20:37:23  : Cannot load from object array because the return value of "java.util.LinkedHashMap.get(Object)" is null
 Excepció : 27 abr 2024, 20:39:02  : Cannot load from object array because the return value of "java.util.LinkedHashMap.get(Object)" is null
 Excepció : 27 abr 2024, 20:40:17  : Cannot load from object array because the return value of "java.util.LinkedHashMap.get(Object)" is null
+Excepció : 28 abr 2024, 00:33:04  : El codi de barres només pot contenir número
+Excepció : 28 abr 2024, 00:36:06  : null
+Excepció : 28 abr 2024, 00:38:47  : El codi de barres només pot contenir número
+Excepció : 28 abr 2024, 00:41:42  : null
+Excepció : 28 abr 2024, 00:41:57  : null

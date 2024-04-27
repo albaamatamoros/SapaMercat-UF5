@@ -1,6 +1,6 @@
 import java.util.Comparator;
 
-public abstract class Producte implements Comparable, Comparator {
+public abstract class Producte implements Comparable<Producte>, Comparator<Producte> {
     float preu;
     String nom;
     String codiDeBarres;
@@ -34,6 +34,15 @@ public abstract class Producte implements Comparable, Comparator {
 
     public void setCodiDeBarres(String codiDeBarres) {
         this.codiDeBarres = codiDeBarres;
+    }
+    @Override
+    public int compareTo(Producte o) {
+        return (Integer.parseInt(codiDeBarres) - Integer.parseInt(o.getCodiBarres()));
+    }
+
+    @Override
+    public int compare(Producte o1, Producte o2) {
+        return (int) (o1.getPreu() - o2.getPreu());
     }
 
     @Override

@@ -26,14 +26,4 @@ public class Electronica extends Producte{
         else { return String.format("%10s %10.2s", nom, getPreu()); }
 
     }
-
-    @Override
-    public int compareTo(Object o) {
-        return 0;
-    }
-
-    @Override
-    public int compare(Object o1, Object o2) {
-        return 0;
-    }
 }

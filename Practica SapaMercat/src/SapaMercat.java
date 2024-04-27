@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -104,13 +105,13 @@ public class SapaMercat {
                 //Afegir un aliment al carro:
                 System.out.println("Afegir aliment");
 
-                System.out.print("Nom producte: \t");
+                System.out.print("Nom producte: ");
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
                 if (nom.length() > MAX_LLARG) throw new Exception("El nom del producte no pot ser superior a 15");
 
-                System.out.print("preu: \t");
+                System.out.print("preu: ");
                 preu = scan.nextFloat();
                 scan.nextLine();
 
@@ -120,6 +121,8 @@ public class SapaMercat {
                 System.out.print("Codi de barres: ");
                 codiBarres = scan.nextLine();
 
+                if (!codiBarres.matches("\\d+")) throw new IllegalArgumentException("El codi de barres només pot contenir números");
+
                 System.out.print("Data de caducitat: ");
                 dataCaducitat = scan.nextLine();
 
@@ -128,11 +131,6 @@ public class SapaMercat {
 
                 //Creem l'objecte Alimentació i el fiquem a l'arraylist productes.
                 productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
-
-                //Cridem el mètode afegirACarro.
-                afegirACarro(nom, codiBarres);
-                //Cridem el mètode afegirACarroPerCaixa
-                afegirACarroPerCaixa(nom, codiBarres, preu);
             }
         } catch (ParseException e) {
             System.out.println("El format de <Data de caducitat> no és correcte");
@@ -160,13 +158,13 @@ public class SapaMercat {
                 //Afegir un tèxtil al carro:
                 System.out.println("Afegir tèxtil");
 
-                System.out.print("Nom producte: \t");
+                System.out.print("Nom producte: ");
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
                 if (nom.length() > MAX_LLARG) throw new Exception("El nom del producte no pot ser superior a 15");
 
-                System.out.print("preu: \t");
+                System.out.print("preu: ");
                 preu = scan.nextFloat();
                 scan.nextLine();
 
@@ -179,13 +177,10 @@ public class SapaMercat {
                 System.out.print("Codi de barres: ");
                 codiBarres = scan.nextLine();
 
+                if (!codiBarres.matches("\\d+")) throw new IllegalArgumentException("El codi de barres només pot contenir números");
+
                 //Creem l'objecte Textil i el fiquem a l'arraylist productes.
                 productes.add(new Textil(preu, nom, codiBarres, composicio));
-
-                //Cridem el mètode añadirACarro.
-                afegirACarro(nom, codiBarres);
-                //Cridem el mètode afegirACarroPerCaixa
-                afegirACarroPerCaixa(nom, codiBarres, preu);
 
                 //Cridem al mètode llegirPreuTextil per comprovar el preu al fitxer UpdateTextilPrices.dat
                 llegirPreuTextil();
@@ -214,13 +209,13 @@ public class SapaMercat {
                 //Afegir un electrònica al carro:
                 System.out.println("Afegir electrònica");
 
-                System.out.print("Nom producte: \t");
+                System.out.print("Nom producte: ");
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
                 if (nom.length() > MAX_LLARG) throw new Exception("El nom del producte no pot ser superior a 15");
 
-                System.out.print("preu: \t");
+                System.out.print("preu: ");
                 preu = scan.nextFloat();
                 scan.nextLine();
 
@@ -234,15 +229,12 @@ public class SapaMercat {
                 System.out.print("Codi de barres: ");
                 codiBarres = scan.nextLine();
 
+                if (!codiBarres.matches("\\d+")) throw new IllegalArgumentException("El codi de barres només pot contenir números");
+
                 //Creem l'objecte Electronica i el fiquem a l'arraylist productes.
                 productes.add(new Electronica(preu, nom, codiBarres, garantia));
-
-                //Cridem el mètode añadirACarro.
-                afegirACarro(nom, codiBarres);
-                //Cridem el mètode afegirACarroPerCaixa
-                afegirACarroPerCaixa(nom, codiBarres, preu);
             }
-        } catch (InputMismatchException e) {
+        }catch (InputMismatchException e) {
             System.out.println("Les dades introduïdes no són del tipus de dades demanades");
             logException(e);
         } catch (Exception e){
@@ -254,6 +246,13 @@ public class SapaMercat {
     //PASSAR PER CAIXA:
     //Mètode per saber el valor total de tota la compra més els detalls dels productes.
     public static void  passarPerCaixa(){
+        //Ordenem l'array
+        Collections.sort(productes);
+        //Cridem el mètode afegirACarroPerCaixa
+        for(Producte p: productes){
+            afegirACarroPerCaixa(p);
+        }
+        //Agafem la data actual.
         LocalDate date = LocalDate.now();
         //Menú tiquet.
         System.out.println("-----------------------------");
@@ -262,6 +261,7 @@ public class SapaMercat {
         System.out.println("Data: " + date);
         System.out.println("-----------------------------");
         //Mostrar LinkedHashMap amb els productes.
+        Collections.sort(productes);
         caixa.forEach((k,v) -> System.out.println(v[0] + " - " + v[1] + " - " + v[2] + " : " + (Float.parseFloat(v[2]) * (Float.parseFloat(v[1])))));
         System.out.println("-----------------------------");
         System.out.println("Total :");
@@ -272,44 +272,55 @@ public class SapaMercat {
     }
 
     //Mètode per afegir a un LinkedHashMap caixa, els valors necessaris a imprimir en passarPerCaixa i contar les unitats dels productes.
-    public static void afegirACarroPerCaixa(String nom, String codi, float preu){
+    public static void afegirACarroPerCaixa(Producte p){
         //Afegim l'objecte Alimentació,Textil o Electronica en el LinkedHashMap "caixa". (En aquest comparem CodiBarres + preuUnitari)
-        String codiPreu = codi + preu;
+        String codiPreu = p.getCodiBarres() + p.getPreu();
         if (!(caixa.containsKey(codiPreu))){
             String[] valorCarro = new String[3];
-            valorCarro[0] = nom;
+            valorCarro[0] = p.getNom();
             valorCarro[1] = "1";
-            valorCarro[2] = preu + "";
+            valorCarro[2] = p.getPreu() + "";
             caixa.put(codiPreu, valorCarro);
         } else {
             String[] valorCarro = new String[3];
             valorCarro[0] = caixa.get(codiPreu)[0];
             valorCarro[1] = (Integer.parseInt(caixa.get(codiPreu)[1]) + 1) + "";
-            valorCarro[2] = preu + "";
+            valorCarro[2] = p.getPreu() + "";
             caixa.replace(codiPreu, valorCarro);
         }
     }
 
     //MOSTRAR CARRO:
     //Mètode per afegir a un LinkedHashMap carro, els valors necessaris a imprimir en mostrarCarro i contar les unitats dels productes.
-    public static void afegirACarro(String nom, String codi){
+    public static void afegirACarro(Producte p){
         //Afegim l'objecte Alimentació,Textil o Electronica en el LinkedHashMap "carro". (En aquest comparem CodiBarres)
-        if (!(carro.containsKey(codi))){
+        if (!(carro.containsKey(p.getCodiBarres()))){
             String[] valorCarro = new String[2];
-            valorCarro[0] = nom;
+            valorCarro[0] = p.getNom();
             valorCarro[1] = "1";
-            carro.put(codi, valorCarro);
+            carro.put(p.getCodiBarres(), valorCarro);
         } else {
             String[] valorCarro = new String[2];
-            valorCarro[0] = carro.get(codi)[0];
-            valorCarro[1] = (Integer.parseInt(carro.get(codi)[1]) + 1) + "" ;
-            carro.replace(codi, valorCarro);
+            valorCarro[0] = carro.get(p.getCodiBarres())[0];
+            valorCarro[1] = (Integer.parseInt(carro.get(p.getCodiBarres())[1]) + 1) + "" ;
+            carro.replace(p.getCodiBarres(), valorCarro);
         }
     }
 
     //Mètode per veure tots els productes del carro.
     public static void  mostrarCarretCompra (){
-        carro.forEach((k,v) -> System.out.println(v[0] + " -> " + v[1]));
+        //Ordenem l'array
+        Collections.sort(productes);
+        //Cridem el mètode añadirACarro.
+        for(Producte p: productes){
+            afegirACarro(p);
+        }
+        if (carro.isEmpty()){
+            System.out.println("El carro està buit");
+        } else {
+            carro.forEach((k,v) -> System.out.println(v[0] + " -> " + v[1]));
+        }
+        carro.clear();
     }
 
     //FITXER EXCEPTION:

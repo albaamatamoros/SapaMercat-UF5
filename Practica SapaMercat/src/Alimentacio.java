@@ -21,7 +21,7 @@ public class Alimentacio extends Producte{
     }
 
     //Calculem el preu segons la data de caducitat.
-    public double getPreuCaducitat() {
+    public float getPreu() {
         float preu = super.getPreu();
         //Creem un objecte Date que guarda la data i hora actual.
         Date data = new Date(System.currentTimeMillis());
@@ -31,7 +31,7 @@ public class Alimentacio extends Producte{
         int dias = (int) ((dataCad.getTime() - data.getTime()));
 
         //Retornem el nou preu del producte basant-nos en els dies que li queden per caducar.
-        return preu - preu*((double) 1 /(dias+1)) - (preu * 0.1);
+        return (float) (preu - preu*(1 /(dias+1)) - (preu * 0.1));
     }
 
     //Amb aquest mètode comprovem si la data introduïda és correcte al format especificat.
@@ -42,18 +42,8 @@ public class Alimentacio extends Producte{
 
     @Override
     public String toString() {
-        if (getPreuCaducitat() <= 0){ return String.format("%10s 0€", nom); }
-        else { return String.format("%10s %10.2s", nom, getPreuCaducitat()); }
+        if (getPreu() <= 0){ return String.format("%10s 0€", nom); }
+        else { return String.format("%10s %10.2s", nom, getPreu()); }
 
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        return 0;
-    }
-
-    @Override
-    public int compare(Object o1, Object o2) {
-        return 0;
     }
 }
