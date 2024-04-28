@@ -20,3 +20,15 @@ Excepció : 28 abr 2024, 02:54:47  : Index 2 out of bounds for length 2
 Excepció : 28 abr 2024, 02:55:19  : Index 2 out of bounds for length 2
 Excepció : 28 abr 2024, 03:30:18  : For input string: "10,99"
 Excepció : 28 abr 2024, 03:30:57  : For input string: "10,99"
+Excepció : 28 abr 2024, 13:48:55  : null
+Excepció : 28 abr 2024, 13:50:14  : El codi de barres només pot contenir números
+Excepció : 28 abr 2024, 14:47:56  : Index 1 out of bounds for length 1
+Excepció : 28 abr 2024, 14:47:56  : Index 1 out of bounds for length 1
+Excepció : 28 abr 2024, 14:47:56  : Index 1 out of bounds for length 1
+Excepció : 28 abr 2024, 14:57:35  : Index 1 out of bounds for length 1
+Excepció : 28 abr 2024, 14:57:35  : Index 1 out of bounds for length 1
+Excepció : 28 abr 2024, 14:59:32  : Index 1 out of bounds for length 1
+Excepció : 28 abr 2024, 14:59:32  : Index 1 out of bounds for length 1
+Excepció : 28 abr 2024, 15:01:45  : Index 1 out of bounds for length 1
+Excepció : 28 abr 2024, 15:04:48  : El codi de barres només pot contenir números
+Excepció : 28 abr 2024, 15:10:25  : La composició no pot contenir números només lletres

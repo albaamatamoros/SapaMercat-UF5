@@ -35,6 +35,7 @@ public class SapaMercat {
             System.out.println("1) Introduir producte");
             System.out.println("2) Passar per caixa");
             System.out.println("3) Mostrar carret de compra");
+            System.out.println("4) Cercar producte");
             System.out.println("0) Acabar");
             opcio = scan.nextLine();
             switch (opcio) {
@@ -47,6 +48,9 @@ public class SapaMercat {
                     break;
                 case "3":
                     mostrarCarretCompra();
+                    break;
+                case "4":
+                    buscarAmbCodi();
                     break;
                 case "0":
                     break;
@@ -121,7 +125,7 @@ public class SapaMercat {
                 System.out.print("Codi de barres: ");
                 codiBarres = scan.nextLine();
 
-                if (!codiBarres.matches("\\d+")) throw new IllegalArgumentException("El codi de barres només pot contenir números");
+                if (!codiBarres.matches("\\d{4}")) throw new IllegalArgumentException("El codi de barres ha de ser de 4 digits i només pot contenir números");
 
                 System.out.print("Data de caducitat: ");
                 dataCaducitat = scan.nextLine();
@@ -174,10 +178,12 @@ public class SapaMercat {
                 System.out.print("Composició: ");
                 composicio = scan.nextLine();
 
+                if (!composicio.matches("[a-zA-Z]")) throw new IllegalArgumentException("La composició no pot contenir números només lletres");
+
                 System.out.print("Codi de barres: ");
                 codiBarres = scan.nextLine();
 
-                if (!codiBarres.matches("\\d+")) throw new IllegalArgumentException("El codi de barres només pot contenir números");
+                if (!codiBarres.matches("\\d{4}")) throw new IllegalArgumentException("El codi de barres ha de ser de 4 digits i només pot contenir números");
 
                 //Comprovem que no es repeteixin dos prod tèxtil iguals.
                 if (textilRepetit(codiBarres)){
@@ -217,7 +223,7 @@ public class SapaMercat {
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
-                if (nom.length() > MAX_LLARG) throw new Exception("El nom del producte no pot ser superior a 15");
+                if (nom.length() > MAX_LLARG) throw new Exception("El codi de barres ha de ser de 4 digits i només pot contenir números");
 
                 System.out.print("preu: ");
                 preu = scan.nextFloat();
@@ -233,7 +239,7 @@ public class SapaMercat {
                 System.out.print("Codi de barres: ");
                 codiBarres = scan.nextLine();
 
-                if (!codiBarres.matches("\\d+")) throw new IllegalArgumentException("El codi de barres només pot contenir números");
+                if (!codiBarres.matches("\\d{4}")) throw new IllegalArgumentException("El codi de barres només pot contenir números");
 
                 //Creem l'objecte Electronica i el fiquem a l'arraylist productes.
                 productes.add(new Electronica(preu, nom, codiBarres, garantia));
@@ -264,11 +270,13 @@ public class SapaMercat {
     public static void  passarPerCaixa(){
         //Ordenem l'array
         Collections.sort(productes);
+
         //Cridem el mètode afegirACarroPerCaixa i el mètode llegirPreuTextil per actualitzar preus.
         for(Producte p: productes){
             afegirACarroPerCaixa(p);
             llegirPreuTextil(p);
         }
+
         //Agafem la data actual.
         LocalDate date = LocalDate.now();
         //Menú tiquet.
@@ -281,11 +289,26 @@ public class SapaMercat {
         Collections.sort(productes);
         caixa.forEach((k,v) -> System.out.println(v[0] + " - " + v[1] + " - " + v[2] + " : " + (Float.parseFloat(v[2]) * (Float.parseFloat(v[1])))));
         System.out.println("-----------------------------");
-        System.out.println("Total :");
+        System.out.println("Total: " + calculPreuFinal());
         // Limpiar los productos del carro, de la caixa i de la llista productes.
         productes.clear();
+        prodTextil.clear();
         carro.clear();
         caixa.clear();
+    }
+
+    //Funció que calcula el preu final de la compra.
+    public static float calculPreuFinal(){
+        float preuTotal = 0.0f;
+        //Fem un bucle per poder fer el càlcul de tots els preus dels productes al HashMap.
+        for (Map.Entry<String, String[]> entry : caixa.entrySet()) {
+            String[] v = entry.getValue();
+            float preuUnitari = Float.parseFloat(v[2]);
+            int quantitat = Integer.parseInt(v[1]);
+            preuTotal += preuUnitari * quantitat;
+        }
+        //Retornem el preuTotal per mostrar-lo per pantalla.
+        return preuTotal;
     }
 
     //Mètode per afegir a un LinkedHashMap caixa, els valors necessaris a imprimir en passarPerCaixa i contar les unitats dels productes.
@@ -384,39 +407,45 @@ public class SapaMercat {
             }
 
             if (p instanceof Textil) {
-                // Verificamos si la clave existe en el mapa
                 if (textilFitxer.containsKey(p.getCodiBarres())) {
-                    // Obtenemos el valor asociado a la clave
                     String valor = textilFitxer.get(p.getCodiBarres());
-
-                    // Asignamos el valor obtenido a p.getPreu()
                     p.setPreu(Float.parseFloat(valor));
                 }
             }
-
-            /*
-            if (p instanceof Textil){
-                for (String key : textilFitxer.keySet()) {
-                    if (textilFitxer.containsKey(p.getCodiBarres())){
-                        if (!textilFitxer.containsValue(p.getPreu() + "")){
-                            p.getPreu() = textilFitxer.entry.getValue();
-                        }
-                    }
-                }
-            }
-
-             */
-
             textilFitxer.forEach((k,v) -> System.out.println(k + " " + v));
-
-            /*
-            for (int i = 0; i < textilFitxer.size(); i++){
-                System.out.println(i);
-            }
-             */
         } catch (Exception e){
             System.out.println(e.getMessage());
             logException(e);
         }
+    }
+
+    //Mètode per buscar un producte en concret al carro mitjançant el codi.
+    public static void buscarAmbCodi() {
+        if (!(productes.isEmpty())){
+            //Demanem per pantalla el codi que volem buscar, si el carro està buit directament informarem l'usuari.
+            System.out.println("Introdueix un codi per cercar el nom del producte:");
+            String codiBarres = scan.nextLine().trim();
+
+            //Creem una variable boolean per poder saber si l'usuari ha trobat el producte o no, i poder informar.
+            boolean producteTrobat = false;
+
+            //Amb un for hem de recórrer tots els productes de l'array.
+            for (int i = 0; i < productes.size(); i++) {
+                Producte productActual = productes.get(i);
+                if (codiBarres.equals(productActual.getCodiBarres())) {
+                    producteTrobat = true;
+                    System.out.println("El producte cercat és: " + productActual.getNom());
+                }
+            }
+
+            //Si el bool es manté en false significa que no hem trobat cap producte.
+            if (producteTrobat == false){
+                System.out.println("El codi introduït no existeix al carro");
+            }
+        } else {
+            System.out.println("El carro és buit, no es pot trobar cap producte");
+        }
+
+
     }
 }
