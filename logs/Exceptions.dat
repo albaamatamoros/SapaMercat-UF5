@@ -32,3 +32,10 @@ Excepció : 28 abr 2024, 14:59:32  : Index 1 out of bounds for length 1
 Excepció : 28 abr 2024, 15:01:45  : Index 1 out of bounds for length 1
 Excepció : 28 abr 2024, 15:04:48  : El codi de barres només pot contenir números
 Excepció : 28 abr 2024, 15:10:25  : La composició no pot contenir números només lletres
+Excepció : 28 abr 2024, 15:20:30  : La composició no pot contenir números només lletres
+Excepció : 28 abr 2024, 15:20:47  : La composició no pot contenir números només lletres
+Excepció : 28 abr 2024, 15:22:03  : El codi de barres ha de ser de 4 digits i només pot contenir números
+Excepció : 28 abr 2024, 15:27:16  : La composició no pot contenir números només lletres
+Excepció : 28 abr 2024, 15:28:23  : null
+Excepció : 28 abr 2024, 15:34:29  : El codi de barres ha de ser de 4 digits i només pot contenir números
+Excepció : 28 abr 2024, 15:36:05  : El codi de barres ha de ser de 4 digits i només pot contenir números

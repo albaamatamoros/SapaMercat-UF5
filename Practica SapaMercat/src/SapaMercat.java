@@ -178,7 +178,7 @@ public class SapaMercat {
                 System.out.print("Composició: ");
                 composicio = scan.nextLine();
 
-                if (!composicio.matches("[a-zA-Z]")) throw new IllegalArgumentException("La composició no pot contenir números només lletres");
+                if (!composicio.matches("^[a-zA-Z]+$")) throw new IllegalArgumentException("La composició no pot contenir números només lletres");
 
                 System.out.print("Codi de barres: ");
                 codiBarres = scan.nextLine();
@@ -268,33 +268,37 @@ public class SapaMercat {
     //PASSAR PER CAIXA:
     //Mètode per saber el valor total de tota la compra més els detalls dels productes.
     public static void  passarPerCaixa(){
-        //Ordenem l'array
-        Collections.sort(productes);
+        if (!(productes.isEmpty())){
+            //Ordenem l'array
+            Collections.sort(productes);
 
-        //Cridem el mètode afegirACarroPerCaixa i el mètode llegirPreuTextil per actualitzar preus.
-        for(Producte p: productes){
-            afegirACarroPerCaixa(p);
-            llegirPreuTextil(p);
+            //Cridem el mètode afegirACarroPerCaixa i el mètode llegirPreuTextil per actualitzar preus.
+            for(Producte p: productes){
+                llegirPreuTextil(p);
+                afegirACarroPerCaixa(p);
+            }
+
+            //Agafem la data actual.
+            LocalDate date = LocalDate.now();
+            //Menú tiquet.
+            System.out.println("-----------------------------");
+            System.out.println("SAPAMERCAT");
+            System.out.println("-----------------------------");
+            System.out.println("Data: " + date);
+            System.out.println("-----------------------------");
+            //Mostrar LinkedHashMap amb els productes.
+            Collections.sort(productes);
+            caixa.forEach((k,v) -> System.out.println(v[0] + " - " + v[1] + " - " + v[2] + " : " + (Float.parseFloat(v[2]) * (Float.parseFloat(v[1])))));
+            System.out.println("-----------------------------");
+            System.out.println("Total: " + calculPreuFinal());
+            // Limpiar los productos del carro, de la caixa i de la llista productes.
+            productes.clear();
+            prodTextil.clear();
+            carro.clear();
+            caixa.clear();
+        } else {
+            System.out.println("El carro està buit, no es pot mostrar tiquet");
         }
-
-        //Agafem la data actual.
-        LocalDate date = LocalDate.now();
-        //Menú tiquet.
-        System.out.println("-----------------------------");
-        System.out.println("SAPAMERCAT");
-        System.out.println("-----------------------------");
-        System.out.println("Data: " + date);
-        System.out.println("-----------------------------");
-        //Mostrar LinkedHashMap amb els productes.
-        Collections.sort(productes);
-        caixa.forEach((k,v) -> System.out.println(v[0] + " - " + v[1] + " - " + v[2] + " : " + (Float.parseFloat(v[2]) * (Float.parseFloat(v[1])))));
-        System.out.println("-----------------------------");
-        System.out.println("Total: " + calculPreuFinal());
-        // Limpiar los productos del carro, de la caixa i de la llista productes.
-        productes.clear();
-        prodTextil.clear();
-        carro.clear();
-        caixa.clear();
     }
 
     //Funció que calcula el preu final de la compra.
@@ -401,18 +405,36 @@ public class SapaMercat {
             BufferedReader br = new BufferedReader(reader);
             String fila;
 
-            while((fila = br.readLine()) != null) {
-                String[] valor = fila.split(":");
-                textilFitxer.put(valor[0], valor[1]);
+            while ((fila = br.readLine()) != null) {
+                String[] partes = fila.split(":");
+                textilFitxer.put(partes[0], partes[1]);
             }
 
-            if (p instanceof Textil) {
-                if (textilFitxer.containsKey(p.getCodiBarres())) {
-                    String valor = textilFitxer.get(p.getCodiBarres());
-                    p.setPreu(Float.parseFloat(valor));
+            String codi = p.getCodiBarres();
+            if (p instanceof Textil){
+                if (textilFitxer.containsKey(codi)) {
+                    //Agafem el preu del fitxer en string.
+                    String preuS = textilFitxer.get(codi);
+                    //El passem a float en una nova variable.
+                    float preu = Float.parseFloat(preuS);
+                    //I donem amb preu el valor actualitzat amb setPreu().
+                    p.setPreu(preu);
+
+                    System.out.println("El preu del producte tèxtil amb codi: " + codi + " ha siguit actualitzat a " + preu);
+                } else {
+                    System.out.println("El codi: " + codi + " no s'ha pogut trobar al fitxer de preus");
                 }
             }
-            textilFitxer.forEach((k,v) -> System.out.println(k + " " + v));
+
+            //Hem de modificar el preu en l'array perquè si no aquest canvi no es veuria reflectit.
+            for (int i = 0; i < productes.size(); i++) {
+                if (productes.get(i).getCodiBarres().equals(p.getCodiBarres())) {
+                    productes.get(i).setPreu(p.getPreu());
+                    break;
+                }
+            }
+
+            br.close();
         } catch (Exception e){
             System.out.println(e.getMessage());
             logException(e);
@@ -445,7 +467,5 @@ public class SapaMercat {
         } else {
             System.out.println("El carro és buit, no es pot trobar cap producte");
         }
-
-
     }
 }
