@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,7 +9,8 @@ import java.util.Scanner;
 public class SapaMercat {
     static Scanner scan = new Scanner(System.in);
     //ARRAYLIST i HASHMAP
-    static ArrayList<Producte> productes = new ArrayList<Producte>();
+    static ArrayList<Producte> productes = new ArrayList<>();
+    static ArrayList<Producte> prodTextil = new ArrayList<>();
     //Utilitzem LinkedHashMap perquè el HashMap quedi ordenat segons com introduïm els productes.
     static LinkedHashMap<String, String[]> carro = new LinkedHashMap<>();
     static LinkedHashMap<String, String[]> caixa = new LinkedHashMap<>();
@@ -179,8 +179,15 @@ public class SapaMercat {
 
                 if (!codiBarres.matches("\\d+")) throw new IllegalArgumentException("El codi de barres només pot contenir números");
 
-                //Creem l'objecte Textil i el fiquem a l'arraylist productes.
-                productes.add(new Textil(preu, nom, codiBarres, composicio));
+                //Comprovem que no es repeteixin dos prod tèxtil iguals.
+                if (textilRepetit(codiBarres)){
+                    System.out.println("No es pot repetir el codi de barres d'un producte textil");
+                } else {
+                    //Creem l'objecte Textil i el fiquem a l'arraylist productes.
+                    productes.add(new Textil(preu, nom, codiBarres, composicio));
+                    //Creem l'objecte Textil i el fiquem a l'arraylist prodTextil productes.
+                    prodTextil.add(new Textil(preu, nom, codiBarres, composicio));
+                }
 
                 //Cridem al mètode llegirPreuTextil per comprovar el preu al fitxer UpdateTextilPrices.dat
                 llegirPreuTextil();
@@ -241,6 +248,18 @@ public class SapaMercat {
             System.out.println(e.getMessage());
             logException(e);
         }
+    }
+
+    //Comprovem que el producte textil no estigui repetit.
+    public static boolean textilRepetit(String codi){
+       boolean repetit = false;
+       for (Producte p : prodTextil){
+           if (p.getCodiBarres().matches(codi)){
+               repetit = true;
+               break;
+           }
+       }
+       return repetit;
     }
 
     //PASSAR PER CAIXA:
@@ -353,13 +372,12 @@ public class SapaMercat {
     //FITXER UPDATETEXTILPRICES.DAT:
     //Mètode per llegir el fitxer UpdateTextilPrices i comprovar els preus segons el codi.
     public static void llegirPreuTextil(){
+        /*
         try {
             File fitxer = new File("./updates/UpdateTextilPrices.dat");
-            FileReader reader = new FileReader(fitxer);
-            BufferedReader br = new BufferedReader(reader);
-            String fila;
         } catch (Exception e) {
-
+            System.out.println(e.getMessage());
         }
+         */
     }
 }
