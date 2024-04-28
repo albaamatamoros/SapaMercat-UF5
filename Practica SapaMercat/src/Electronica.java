@@ -23,7 +23,7 @@ public class Electronica extends Producte{
     @Override
     public String toString() {
         if (getPreu() <= 0){ return String.format("%10s 0€", nom); }
-        else { return String.format("%10s %10.2s", nom, getPreu()); }
+        else { return String.format("%10s %10.2f", nom, getPreu()); }
 
     }
 }

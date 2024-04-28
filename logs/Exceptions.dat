@@ -43,3 +43,23 @@ Excepció : 28 abr 2024, 16:05:00  : null
 Excepció : 28 abr 2024, 16:15:24  : El codi de barres ha de ser de 4 digits i només pot contenir números
 Excepció : 28 abr 2024, 16:15:41  : El codi de barres només pot contenir números
 Excepció : 28 abr 2024, 16:57:33  : El codi de barres ha de ser de 4 digits i només pot contenir números
+Excepció : 28 abr 2024, 17:20:26  : El nom del producte no pot ser superior a 15
+Excepció : 28 abr 2024, 17:20:30  : El nom del producte no pot ser superior a 15
+Excepció : 28 abr 2024, 18:10:18  : La composició no pot contenir números només lletres
+Excepció : 28 abr 2024, 18:10:37  : El preu no pot ser inferior a 0
+Excepció : 28 abr 2024, 18:13:44  : El codi de barres ha de ser de 4 digits i només pot contenir números
+Excepció : 28 abr 2024, 18:14:21  : null
+Excepció : 28 abr 2024, 18:15:06  : Unparseable date: "02/29"
+Excepció : 28 abr 2024, 18:16:09  : La composició no pot contenir números només lletres
+Excepció : 28 abr 2024, 18:16:28  : null
+Excepció : 28 abr 2024, 18:16:45  : null
+Excepció : 28 abr 2024, 18:17:00  : For input string: "311364855555"
+Excepció : 28 abr 2024, 18:17:28  : El codi de barres ha de ser de 4 digits i només pot contenir números
+Excepció : 28 abr 2024, 18:36:54  : El codi de barres ha de ser de 4 digits i només pot contenir números
+Excepció : 28 abr 2024, 18:37:23  : null
+Excepció : 28 abr 2024, 18:39:01  : El nom no pot estar buit
+Excepció : 28 abr 2024, 18:39:57  : El nom del producte no pot ser superior a 15 ni pot estar buit
+Excepció : 28 abr 2024, 18:40:03  : El nom del producte no pot ser superior a 15 ni pot estar buit
+Excepció : 28 abr 2024, 18:42:57  : El codi de barres ha de ser de 4 digits i només pot contenir números
+Excepció : 28 abr 2024, 18:43:10  : El codi de barres ha de ser de 4 digits i només pot contenir números
+Excepció : 28 abr 2024, 18:43:24  : Unparseable date: ""

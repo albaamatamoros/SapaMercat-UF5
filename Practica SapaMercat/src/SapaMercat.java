@@ -109,25 +109,25 @@ public class SapaMercat {
                 //Afegir un aliment al carro:
                 System.out.println("Afegir aliment");
 
-                System.out.print("Nom producte: ");
+                System.out.print("Nom producte (15 dígits MAX): ");
                 nom = scan.nextLine();
 
-                //Exception nom superior a 15 caràcters.
-                if (nom.length() > MAX_LLARG) throw new Exception("El nom del producte no pot ser superior a 15");
+                //Exception nom superior a 15 caràcters ni pot estar buit.
+                if (nom.length() > MAX_LLARG || nom.isEmpty()) throw new Exception("El nom del producte no pot ser superior a 15 ni pot estar buit");
 
-                System.out.print("preu: ");
+                System.out.print("preu (,): ");
                 preu = scan.nextFloat();
                 scan.nextLine();
 
                 //Exception preu inferior a 0.
                 if (preu < 0) throw new Exception("El preu no pot ser inferior a 0");
 
-                System.out.print("Codi de barres: ");
+                System.out.print("Codi de barres (4 dígits): ");
                 codiBarres = scan.nextLine();
 
                 if (!codiBarres.matches("\\d{4}")) throw new IllegalArgumentException("El codi de barres ha de ser de 4 digits i només pot contenir números");
 
-                System.out.print("Data de caducitat: ");
+                System.out.print("Data de caducitat (dd/MM/yyyy): ");
                 dataCaducitat = scan.nextLine();
 
                 //Cridem el mètode correctData per verificar el format de dataCaducita.
@@ -137,7 +137,7 @@ public class SapaMercat {
                 productes.add(new Alimentacio(preu, nom, codiBarres, dataCaducitat));
             }
         } catch (ParseException e) {
-            System.out.println("El format de <Data de caducitat> no és correcte");
+            System.out.println("El format de data de caducitat no és correcte");
             logException(e);
         } catch (InputMismatchException e) {
             System.out.println("Les dades introduïdes no són del tipus de dades demanades");
@@ -162,13 +162,13 @@ public class SapaMercat {
                 //Afegir un tèxtil al carro:
                 System.out.println("Afegir tèxtil");
 
-                System.out.print("Nom producte: ");
+                System.out.print("Nom producte (15 dígits MAX): ");
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
-                if (nom.length() > MAX_LLARG) throw new Exception("El nom del producte no pot ser superior a 15");
+                if (nom.length() > MAX_LLARG || nom.isEmpty()) throw new Exception("El nom del producte no pot ser superior a 15 ni pot estar buit");
 
-                System.out.print("preu: ");
+                System.out.print("preu (,): ");
                 preu = scan.nextFloat();
                 scan.nextLine();
 
@@ -180,7 +180,7 @@ public class SapaMercat {
 
                 if (!composicio.matches("^[a-zA-Z]+$")) throw new IllegalArgumentException("La composició no pot contenir números només lletres");
 
-                System.out.print("Codi de barres: ");
+                System.out.print("Codi de barres (4 dígits): ");
                 codiBarres = scan.nextLine();
 
                 if (!codiBarres.matches("\\d{4}")) throw new IllegalArgumentException("El codi de barres ha de ser de 4 digits i només pot contenir números");
@@ -219,13 +219,13 @@ public class SapaMercat {
                 //Afegir un electrònica al carro:
                 System.out.println("Afegir electrònica");
 
-                System.out.print("Nom producte: ");
+                System.out.print("Nom producte (15 dígits MAX): ");
                 nom = scan.nextLine();
 
                 //Exception nom superior a 15 caràcters.
-                if (nom.length() > MAX_LLARG) throw new Exception("El nom del producte no pot ser superior a 15");
+                if (nom.length() > MAX_LLARG || nom.isEmpty()) throw new Exception("El nom del producte no pot ser superior a 15 ni pot estar buit");
 
-                System.out.print("preu: ");
+                System.out.print("preu (,): ");
                 preu = scan.nextFloat();
                 scan.nextLine();
 
@@ -236,7 +236,7 @@ public class SapaMercat {
                 garantia = scan.nextInt();
                 scan.nextLine();
 
-                System.out.print("Codi de barres: ");
+                System.out.print("Codi de barres (4 dígits): ");
                 codiBarres = scan.nextLine();
 
                 if (!codiBarres.matches("\\d{4}")) throw new IllegalArgumentException("El codi de barres ha de ser de 4 digits i només pot contenir números");
@@ -253,6 +253,7 @@ public class SapaMercat {
         }
     }
 
+    //TEXTIL REPETIT:
     //Comprovem que el producte textil no estigui repetit.
     public static boolean textilRepetit(String codi){
        boolean repetit = false;
@@ -290,7 +291,7 @@ public class SapaMercat {
             Collections.sort(productes);
             caixa.forEach((k,v) -> System.out.println(v[0] + " - " + v[1] + " - " + v[2] + " : " + (Float.parseFloat(v[2]) * (Float.parseFloat(v[1])))));
             System.out.println("-----------------------------");
-            System.out.println("Total: " + calculPreuFinal());
+            System.out.printf("Total: %2.2f \n", calculPreuFinal());
             // Limpiar los productos del carro, de la caixa i de la llista productes.
             productes.clear();
             prodTextil.clear();
@@ -320,12 +321,14 @@ public class SapaMercat {
         //Afegim l'objecte Alimentació,Textil o Electronica en el LinkedHashMap "caixa". (En aquest comparem CodiBarres + preuUnitari)
         String codiPreu = p.getCodiBarres() + p.getPreu();
         if (!(caixa.containsKey(codiPreu))){
+            //Si no trobem un codi i un preu igual, afegim el producte.
             String[] valorCarro = new String[3];
             valorCarro[0] = p.getNom();
             valorCarro[1] = "1";
             valorCarro[2] = p.getPreu() + "";
             caixa.put(codiPreu, valorCarro);
         } else {
+            //Si el trobem al LinkedHashMap "carro" el sumem al codi anterior.
             String[] valorCarro = new String[3];
             valorCarro[0] = caixa.get(codiPreu)[0];
             valorCarro[1] = (Integer.parseInt(caixa.get(codiPreu)[1]) + 1) + "";
@@ -339,11 +342,13 @@ public class SapaMercat {
     public static void afegirACarro(Producte p){
         //Afegim l'objecte Alimentació,Textil o Electronica en el LinkedHashMap "carro". (En aquest comparem CodiBarres)
         if (!(carro.containsKey(p.getCodiBarres()))){
+            //Si el codi de barres no es troba al LinkedHashMap carro l'introduim.
             String[] valorCarro = new String[2];
             valorCarro[0] = p.getNom();
             valorCarro[1] = "1";
             carro.put(p.getCodiBarres(), valorCarro);
         } else {
+            //Si el trobem al LinkedHashMap "carro" el sumem al codi anterior.
             String[] valorCarro = new String[2];
             valorCarro[0] = carro.get(p.getCodiBarres())[0];
             valorCarro[1] = (Integer.parseInt(carro.get(p.getCodiBarres())[1]) + 1) + "" ;
@@ -412,8 +417,8 @@ public class SapaMercat {
 
 
             while ((fila = br.readLine()) != null) {
-                String[] partes = fila.split(":");
-                textilFitxer.put(partes[0], partes[1]);
+                String[] valors = fila.split(":");
+                textilFitxer.put(valors[0], valors[1]);
             }
 
             String codi = p.getCodiBarres();
@@ -466,20 +471,15 @@ public class SapaMercat {
 
                 if (!codiBarres.matches("\\d{4}")) throw new IllegalArgumentException("El codi de barres ha de ser de 4 digits i només pot contenir números");
 
-                //Creem una variable boolean per poder saber si l'usuari ha trobat el producte o no, i poder informar.
-                boolean producteTrobat = false;
+                //Optional és una classe que pot contenir un valor.
+                //Busquem el producte mitjançant filtres utilitzant stream i una expressió lambda.
+                Optional<Producte> producteTrobat = productes.stream().filter(producte -> codiBarres.equals(producte.getCodiBarres())).findFirst();
 
-                //Amb un for hem de recórrer tots els productes de l'array.
-                for (int i = 0; i < productes.size(); i++) {
-                    Producte productActual = productes.get(i);
-                    if (codiBarres.equals(productActual.getCodiBarres())) {
-                        producteTrobat = true;
-                        System.out.println("El producte cercat és: " + productActual.getNom());
-                    }
-                }
-
-                //Si el bool es manté en false significa que no hem trobat cap producte.
-                if (producteTrobat == false){
+                //Comprobem si l'hem trobat o no, per mostra un missatge.
+                //isPresent l'utilitzem per saber si a trobat el rpoducte amb aquest codi.
+                if (producteTrobat.isPresent()) {
+                    System.out.println("El producte cercat és: " + producteTrobat.get().getNom());
+                } else {
                     System.out.println("El codi introduït no existeix al carro");
                 }
             } else {
