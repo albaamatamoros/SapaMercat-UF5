@@ -188,9 +188,6 @@ public class SapaMercat {
                     //Creem l'objecte Textil i el fiquem a l'arraylist prodTextil productes.
                     prodTextil.add(new Textil(preu, nom, codiBarres, composicio));
                 }
-
-                //Cridem al mètode llegirPreuTextil per comprovar el preu al fitxer UpdateTextilPrices.dat
-                llegirPreuTextil();
             }
         } catch (InputMismatchException e) {
             System.out.println("Les dades introduïdes no són del tipus de dades demanades");
@@ -267,9 +264,10 @@ public class SapaMercat {
     public static void  passarPerCaixa(){
         //Ordenem l'array
         Collections.sort(productes);
-        //Cridem el mètode afegirACarroPerCaixa
+        //Cridem el mètode afegirACarroPerCaixa i el mètode llegirPreuTextil per actualitzar preus.
         for(Producte p: productes){
             afegirACarroPerCaixa(p);
+            llegirPreuTextil(p);
         }
         //Agafem la data actual.
         LocalDate date = LocalDate.now();
@@ -371,13 +369,54 @@ public class SapaMercat {
 
     //FITXER UPDATETEXTILPRICES.DAT:
     //Mètode per llegir el fitxer UpdateTextilPrices i comprovar els preus segons el codi.
-    public static void llegirPreuTextil(){
-        /*
+    public static void llegirPreuTextil(Producte p) {
         try {
             File fitxer = new File("./updates/UpdateTextilPrices.dat");
-        } catch (Exception e) {
+            HashMap<String, String> textilFitxer = new HashMap<String, String>();
+
+            FileReader reader = new FileReader(fitxer);
+            BufferedReader br = new BufferedReader(reader);
+            String fila;
+
+            while((fila = br.readLine()) != null) {
+                String[] valor = fila.split(":");
+                textilFitxer.put(valor[0], valor[1]);
+            }
+
+            if (p instanceof Textil) {
+                // Verificamos si la clave existe en el mapa
+                if (textilFitxer.containsKey(p.getCodiBarres())) {
+                    // Obtenemos el valor asociado a la clave
+                    String valor = textilFitxer.get(p.getCodiBarres());
+
+                    // Asignamos el valor obtenido a p.getPreu()
+                    p.setPreu(Float.parseFloat(valor));
+                }
+            }
+
+            /*
+            if (p instanceof Textil){
+                for (String key : textilFitxer.keySet()) {
+                    if (textilFitxer.containsKey(p.getCodiBarres())){
+                        if (!textilFitxer.containsValue(p.getPreu() + "")){
+                            p.getPreu() = textilFitxer.entry.getValue();
+                        }
+                    }
+                }
+            }
+
+             */
+
+            textilFitxer.forEach((k,v) -> System.out.println(k + " " + v));
+
+            /*
+            for (int i = 0; i < textilFitxer.size(); i++){
+                System.out.println(i);
+            }
+             */
+        } catch (Exception e){
             System.out.println(e.getMessage());
+            logException(e);
         }
-         */
     }
 }
