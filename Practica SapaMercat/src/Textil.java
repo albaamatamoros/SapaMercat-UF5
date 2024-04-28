@@ -20,6 +20,11 @@ public class Textil extends Producte{
     }
 
     @Override
+    public int compareTo(Producte o){
+        return composicioTextil.length() - ((Textil) o).getComposicioTextil().length();
+    }
+
+    @Override
     public String toString() {
         return String.format("%10s %10.2s", nom, getPreu());
     }
